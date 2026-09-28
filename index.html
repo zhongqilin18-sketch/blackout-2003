@@ -616,7 +616,8 @@ const vid=$('vid');
   CHAPTERS.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='chap';b.innerHTML='<i class="fill"></i><span class="t">'+fmt(c.t)+'</span>'+c.n;b.onclick=()=>seek(c.t);box.appendChild(b)});
   vid.addEventListener('timeupdate',()=>{const t=vid.currentTime;[...box.children].forEach((b,i)=>{const s=CHAPTERS[i].t,e=(CHAPTERS[i+1]||{t:VEND}).t;b.querySelector('.fill').style.width=Math.max(0,Math.min(1,(t-s)/(e-s)))*100+'%';b.classList.toggle('on',t>=s&&t<e)})});
 })();
-function seek(t){$('video').scrollIntoView({behavior:'smooth'});try{vid.currentTime=t;const p=vid.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
+let pendingSeek=null;
+function seek(t){$('video').scrollIntoView({behavior:reduce?'auto':'smooth'});pendingSeek=t;const run=()=>{if(pendingSeek===null)return;const target=pendingSeek;pendingSeek=null;try{vid.currentTime=Math.min(target,Number.isFinite(vid.duration)?Math.max(0,vid.duration-.05):target);const p=vid.play();if(p&&p.catch)p.catch(()=>{$('video-status').textContent='已定位章节，请点击视频播放。'})}catch(e){$('video-status').textContent='视频仍在加载，请稍后重试。'}};if(vid.readyState>=1)run();else vid.addEventListener('loadedmetadata',run,{once:true})}
 
 /* ===== 事故回放 ===== */
 (function(){
@@ -777,7 +778,7 @@ function seek(t){$('video').scrollIntoView({behavior:'smooth'});try{vid.currentT
       const best=live.sort((a,b)=>Math.abs(r.f[b.id])-Math.abs(r.f[a.id]))[0];
       const ok=best&&best.id===guess;sel=pend;pend=null;
       update(ok?'猜对了：'+name(best.id)+' 最重':'不对，最重的是 '+(best?name(best.id):'—'));
-      if(ok)done.add('guess');
+      if(ok){done.add('guess');tasks()}
       setTimeout(()=>toast(ok?'猜对了：'+name(best.id)+' 最重':'不对，最重的是 '+(best?name(best.id):'—'),ok?'good':'bad'),30);
       return}
     sel=id;insp();draw(shown,solve().f);
@@ -852,12 +853,12 @@ function seek(t){$('video').scrollIntoView({behavior:'smooth'});try{vid.currentT
     const lp=pts[pts.length-1];if(!lp||Math.hypot(lp[0]-X,lp[1]-Y)>8){pts.push([X,Y]);if(pts.length>50)pts.shift();trail.setAttribute('points',pts.map(p=>p.join(',')).join(' '))}
     const inz=inZones(z);z3.classList.toggle('hot',inz[2]);
     ['z1','z2','z3'].forEach((k,i)=>{$(k+'t').textContent=inz[i]?(D[i]===0?'动作':held[i].toFixed(1)+' s'):'—';$(k+'b').style.width=(inz[i]?(D[i]===0?100:held[i]/D[i]*100):0)+'%'});
-    const st=$('rxstat');
-    if(tripped){st.className='rxstat trip';st.innerHTML='<b>'+['一区','二区','三区'][tripped-1]+'动作，断路器跳闸。</b>'+(label==='重载低压'?' 线路上并没有故障——这就是 Sammis–Star 在 16:05:57 遇到的情况。':'')+' <button class="btn" id="rearm" type="button" style="margin-left:6px">复位</button>';$('rearm').onclick=rearm;$('rxled').className='led trip'}
+    const st=$('rxstat');const setStatus=s=>{if(st.innerHTML!==s)st.innerHTML=s};
+    if(tripped){st.className='rxstat trip';setStatus('<b>'+['一区','二区','三区'][tripped-1]+'动作，断路器跳闸。</b>'+(label==='重载低压'?' 线路上并没有故障——这就是 Sammis–Star 在 16:05:57 遇到的情况。':'')+' <button class="btn" id="rearm" type="button" style="margin-left:6px">复位</button>');$('rearm').onclick=rearm;$('rxled').className='led trip'}
     else{st.className='rxstat';$('rxled').className='led'+(inz.some(Boolean)?' warn':'');
       st.innerHTML=inz[0]?'点在一区内：立即跳闸。':inz[1]?'点在二区内：0.4 秒后跳闸。':inz[2]?'点在三区内：延时计时中，满 1.5 秒就跳闸。':blocked(z)&&inMho(z,+sR.value)?'<b>点在负荷限制区内，</b>三区不动作。':'点在所有圈外：保护不动作。视在阻抗 '+z.m.toFixed(2)+' p.u.'}
   }
-  function rearm(){tripped=0;held=[0,0,0];pts=[];label='正常负荷';set(PRE.normal)}
+  function rearm(){stopDemo();tripped=0;held=[0,0,0];pts=[];label='正常负荷';set(PRE.normal);document.querySelectorAll('.pc').forEach(x=>x.classList.toggle('on',x.dataset.p==='normal'));render()}
   function loop(now){const dt=Math.min(.1,(now-last)/1000);last=now;
     if(!tripped){const inz=inZones(Z());inz.forEach((v,i)=>{held[i]=v?held[i]+dt:0;if(v&&held[i]>=D[i]&&!tripped)tripped=i+1})}
     if(document.visibilityState!=='hidden')render();requestAnimationFrame(loop)}
