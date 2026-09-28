@@ -1,0 +1,1045 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="2003年美加大停电互动纪录片：观看事故回顾，探索潮流重分配、距离保护与电网可靠性。">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:,">
+<title>美加大停电-失去的余度</title>
+<style>
+:root{
+  --bg:#EDF2F7;--panel:#FFFFFF;--panel2:#F5F8FB;--rule:#D4DDE7;--grid:#E3E9F0;
+  --ink:#0F1F35;--muted:#5A6B82;--faint:#8C9AAD;
+  --k345:#1B5BD6;--k138:#0B9A89;--hot:#EE9A0B;--trip:#DF3329;--ok:#17A158;
+  --display:"STXingkai","华文行楷","STKaiti","KaiTi","楷体",serif;
+  --body:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --gauge:"Consolas","SF Mono","Menlo","Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:15.5px/1.7 var(--body);
+  background:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:32px 32px}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:2px solid var(--k345);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.mono{font-family:var(--gauge)}
+
+nav.top{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);border-bottom:1px solid var(--rule)}
+nav.top .wrap{display:flex;align-items:center;gap:22px;height:50px;overflow-x:auto}
+nav.top .brand{font-family:var(--display);font-size:22px;color:var(--ink);text-decoration:none;margin-right:auto;white-space:nowrap}
+nav.top a.lk{color:var(--muted);text-decoration:none;font-size:14px;white-space:nowrap}
+nav.top a.lk:hover{color:var(--k345)}
+.sys{display:flex;align-items:center;gap:7px;font:12px var(--gauge);color:var(--muted);white-space:nowrap}
+.led{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;flex:none}
+.led.warn{background:var(--hot)}.led.trip{background:var(--trip)}.led.off{background:#B7C2CF}
+.led.blink{animation:blink .8s steps(2) infinite}
+@keyframes blink{50%{opacity:.2}}
+
+/* 开场 */
+.hero{padding:56px 0 28px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:end}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(60px,10vw,120px);line-height:1;margin:0}
+.hero .sub{font-size:18px;color:var(--muted);margin:14px 0 0;max-width:30em}
+.meter{font-family:var(--gauge);text-align:right}
+.meter .v{font-size:44px;color:var(--trip);line-height:1}
+.meter .c{font-size:12px;color:var(--muted)}
+.hero-net{margin-top:26px;background:var(--panel);border:1px solid var(--rule);border-radius:12px;position:relative;overflow:hidden}
+.hero-net svg{display:block;width:100%;height:auto}
+.hero-net .e{stroke:var(--k345);stroke-width:3;transition:stroke .3s}
+.hero-net .e.x{stroke:var(--trip);stroke-dasharray:5 6;stroke-width:2}
+.hero-net .e.lv{stroke:var(--k138);stroke-width:2}
+.hero-net .e.lv.x{stroke:var(--trip)}
+.hero-net .b{fill:var(--ink)}
+.hero-net .b.x{fill:#B7C2CF}
+.hero-net .led2{fill:var(--ok);transition:fill .3s}.hero-net .led2.x{fill:var(--trip)}
+.hero-net .cap{position:absolute;left:16px;bottom:10px;font:12px var(--gauge);color:var(--muted)}
+.hero-net .rp{position:absolute;right:12px;bottom:8px;background:var(--panel);border:1px solid var(--rule);border-radius:16px;padding:2px 12px;font-size:12.5px;color:var(--muted)}
+
+/* 通用面板 */
+section.blk{padding:64px 0 10px}
+.blk h2{font-family:var(--display);font-weight:400;font-size:42px;line-height:1.15;margin:0}
+.blk .hint{color:var(--muted);margin:6px 0 22px;max-width:44em}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:12px;position:relative}
+.bar{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--rule);background:var(--panel2);border-radius:12px 12px 0 0;font-size:13.5px}
+.bar .id{font:12px var(--gauge);color:var(--faint)}
+.bar .sp{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:5px 13px;font-size:13.5px;white-space:nowrap}
+.btn:hover{border-color:var(--k345);color:var(--k345)}
+.btn.pri{background:var(--k345);border-color:var(--k345);color:#fff}
+.btn.pri:hover{background:#1449B0;color:#fff}
+.btn.on{border-color:var(--k345);color:var(--k345);background:#EAF1FD}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.note{font-size:12.5px;color:var(--faint);line-height:1.6;margin:0}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);border-radius:14px;padding:1px 10px;font-size:12.5px;color:var(--muted);background:var(--panel)}
+input[type=range]{width:100%;accent-color:var(--k345)}
+
+/* 视频 */
+.video-shell{position:relative;background:#0B1422;border-radius:0 0 12px 12px;aspect-ratio:16/9;overflow:hidden}
+.video-shell video{width:100%;height:100%;display:block}
+.vmiss{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#C9D3DF;text-align:center}
+.vmiss.show{display:flex}
+.vmiss label{background:var(--k345);color:#fff;border-radius:8px;padding:7px 18px;cursor:pointer}
+.vmiss input{display:none}
+.chapters{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+.chap{background:var(--panel);border:1px solid var(--rule);border-radius:8px;text-align:left;padding:6px 9px 7px;font-size:13px;line-height:1.35;position:relative;overflow:hidden}
+.chap .t{font:11.5px var(--gauge);color:var(--faint);display:block}
+.chap .fill{position:absolute;left:0;bottom:0;height:3px;background:var(--k345);width:0}
+.chap.on{border-color:var(--k345);color:var(--k345)}
+
+/* 事故回放 */
+.replay-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px}
+.clockface{padding:18px 20px 8px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.clockface .big{font:600 44px var(--gauge);letter-spacing:.02em}
+.clockface .z{font-size:12.5px;color:var(--muted)}
+.scrub{padding:0 20px 18px}
+.scrub svg{display:block;width:100%;height:auto}
+.scrub .tk{font:11px var(--gauge);fill:var(--faint)}
+.board{width:100%;border-collapse:collapse;font-size:13.5px}
+.board td{padding:8px 14px;border-bottom:1px solid var(--grid);vertical-align:middle}
+.board td.s{font:12.5px var(--gauge);text-align:right;white-space:nowrap}
+.board tr.flash td{animation:flashrow 1.2s}
+@keyframes flashrow{0%{background:#FFF1D6}100%{background:transparent}}
+.board .pb{height:4px;background:var(--grid);border-radius:2px;margin-top:5px;overflow:hidden}
+.board .pb i{display:block;height:100%;background:var(--hot);width:0}
+.evcard{padding:16px 20px}
+.evcard .when{font:600 15px var(--gauge);color:var(--k345)}
+.evcard h3{margin:2px 0 4px;font-size:17px;font-weight:600}
+.evcard p{margin:0 0 12px;color:var(--muted);font-size:14.5px}
+
+/* 潮流实验室 */
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px}
+.stage{position:relative}
+.stage svg{display:block;width:100%;height:auto}
+.ln .hit{stroke:transparent;stroke-width:32;cursor:pointer}
+.ln .wire{stroke:#AFBCCB;stroke-width:1.5}
+.ln .band{stroke:var(--k345);stroke-linecap:round;opacity:.9}
+.ln .flow{stroke:#fff;stroke-width:2;stroke-dasharray:3 13;fill:none;opacity:.85;animation:march 1.1s linear infinite}
+.ln .flow.rev{animation-direction:reverse}
+@keyframes march{to{stroke-dashoffset:-16}}
+.ln.up .band{stroke:var(--hot)}
+.ln.out .band,.ln.out .flow{opacity:0}
+.ln.out .wire{stroke:var(--trip);stroke-dasharray:6 6}
+.ln.sel .wire{stroke:var(--ink);stroke-width:2.5}
+.ln.out.sel .wire{stroke:var(--trip);stroke-width:2.5}
+.ln.guess .wire{stroke:var(--hot);stroke-width:3;stroke-dasharray:3 4}
+.ln .tag rect{fill:#fff;stroke:var(--rule)}
+.ln.up .tag rect{stroke:var(--hot)}
+.ln.sel .tag rect{stroke:var(--ink)}
+.ln .tag .v{font:600 14px var(--gauge);fill:var(--ink)}
+.ln .tag .d{font:11px var(--gauge);fill:var(--muted)}
+.ln.up .tag .d{fill:#B26F00}
+.ln.out .tag .v{fill:var(--trip)}
+.bus rect{fill:var(--ink)}
+.bus text{font:600 17px var(--body);fill:var(--ink)}
+.bus .inj{font:12px var(--body);fill:var(--muted);font-weight:400}
+.toast{position:absolute;left:50%;bottom:14px;transform:translate(-50%,6px);background:var(--ink);color:#fff;border-radius:18px;padding:5px 16px;font-size:13.5px;opacity:0;pointer-events:none;transition:.25s;white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;z-index:3}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.toast.good{background:var(--ok)}.toast.bad{background:var(--trip)}
+.insp{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+.insp h3{margin:0;font-size:14.5px;font-weight:600}
+.kv{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;font-size:13.5px}
+.kv output{font:13px var(--gauge);min-width:4.5em;text-align:right}
+.tasks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tasks li{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;padding:7px 10px;border:1px solid var(--grid);border-radius:8px}
+.tasks li .ck{width:16px;height:16px;border:1.5px solid var(--faint);border-radius:4px;flex:none;margin-top:3px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+.tasks li.done{border-color:#BFE6CF;background:#F1FAF4}
+.tasks li.done .ck{background:var(--ok);border-color:var(--ok)}
+.n1{width:100%;border-collapse:collapse;font-size:13px}
+.n1 td{padding:5px 4px;border-bottom:1px solid var(--grid)}
+.n1 td.num{font-family:var(--gauge);text-align:right}
+.n1 tr{cursor:pointer}.n1 tr:hover td{background:var(--panel2)}
+.n1 tr.worst td{color:#B26F00}
+
+/* 距离保护 */
+.rx-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+.rx svg{display:block;width:100%;height:auto;touch-action:none}
+.rx .gr{stroke:var(--grid)}.rx .ax{stroke:#9AA8B8}
+.rx text{font-size:12.5px;fill:var(--muted)}
+.rx .z1{fill:rgba(223,51,41,.16);stroke:var(--trip)}
+.rx .z2{fill:rgba(238,154,11,.10);stroke:var(--hot)}
+.rx .z3{fill:rgba(27,91,214,.07);stroke:var(--k345);stroke-dasharray:6 4}
+.rx .z3.hot{fill:rgba(27,91,214,.18)}
+.rx .le{fill:rgba(23,161,88,.13);stroke:var(--ok);stroke-dasharray:3 3}
+.rx .lineZ{stroke:var(--ink);stroke-width:2.5}
+.rx .trail{fill:none;stroke:var(--hot);stroke-width:2;opacity:.5;stroke-linejoin:round}
+.rx .pt{fill:var(--hot);stroke:#fff;stroke-width:2.5;cursor:grab}
+.rx .tp{fill:none;stroke-width:2}
+.rxc{padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.sl{display:grid;grid-template-columns:4.8em 1fr 3.8em;gap:10px;align-items:center;font-size:13.5px}
+.sl output{font:13px var(--gauge);text-align:right}
+.zt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.zt div{border:1px solid var(--grid);border-radius:8px;padding:6px 9px;font-size:12px;color:var(--muted)}
+.zt b{display:block;font:600 14px var(--gauge);color:var(--ink)}
+.zt .pb{height:4px;background:var(--grid);border-radius:2px;margin-top:4px;overflow:hidden}
+.zt .pb i{display:block;height:100%;width:0;background:var(--hot)}
+.rxstat{border-radius:8px;padding:9px 12px;font-size:13.5px;background:var(--panel2);border:1px solid var(--grid);min-height:46px}
+.rxstat.trip{background:#FDECEA;border-color:#F4B9B4}
+.test{border:1px dashed var(--rule);border-radius:8px;padding:10px 12px;font-size:13.5px}
+.test .row{display:flex;justify-content:space-between;gap:10px;margin-top:4px}
+.pass{color:var(--ok);font-weight:600}.fail{color:var(--trip);font-weight:600}
+
+/* 调度员挑战 */
+.game-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px}
+.g .l .base{stroke-linecap:round;fill:none;transition:stroke .25s}
+.g .l.k345 .base{stroke:var(--k345);stroke-width:6}
+.g .l.k138 .base{stroke:var(--k138);stroke-width:3}
+.g .l.warn .base{stroke:var(--hot)}
+.g .l.over .base{stroke:var(--trip);animation:blink .5s steps(2) infinite}
+.g .l.blind .base{stroke:#9AA8B8}
+.g .l.out .base{stroke:#C4CDD8;stroke-dasharray:6 7;animation:none}
+.g .l .flow{fill:none;stroke:#fff;stroke-width:1.6;stroke-dasharray:3 13;animation:march 1s linear infinite;opacity:.9}
+.g .l.k138 .flow{stroke-width:1.2}
+.g .l .flow.rev{animation-direction:reverse}
+.g .l.out .flow,.g .l.blind .flow{opacity:0}
+.g .tag rect{fill:#fff;stroke:var(--rule)}
+.g .tag text{font:600 12px var(--gauge);fill:var(--ink)}
+.g .l.warn .tag rect{stroke:var(--hot)}.g .l.over .tag rect{stroke:var(--trip);fill:#FDECEA}
+.g .l.out .tag text{fill:var(--trip)}
+.g .busbar{fill:var(--ink)}
+.g .nm{font:600 13.5px var(--body);fill:var(--ink)}
+.g .sm{font:12px var(--gauge);fill:var(--muted)}
+.g .gen{fill:#fff;stroke:var(--ink);stroke-width:2}
+.g .tree{cursor:pointer}
+.g .tree .crown{fill:#3E8E4F}
+.g .tree.trim .crown{fill:#9BC7A5}
+.g .tree .mbg{fill:var(--grid)}
+.g .tree .mfg{fill:#3E8E4F}
+.g .tree.risk .mfg{fill:var(--hot)}
+.g .tree.risk2 .mfg{fill:var(--trip)}
+.overlay{position:absolute;inset:44px 0 0 0;background:rgba(255,255,255,.93);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;border-radius:0 0 12px 12px;z-index:4}
+.overlay.show{display:flex}
+.overlay h3{font-family:var(--display);font-weight:400;font-size:40px;margin:0 0 8px}
+.overlay p{margin:0 0 6px;color:var(--muted);max-width:32em}
+.overlay .stars{font-size:28px;letter-spacing:6px;color:var(--hot);margin:6px 0}
+.ctrl{padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.gclock{display:flex;align-items:baseline;justify-content:space-between}
+.gclock .big{font:600 32px var(--gauge)}
+.gauge2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gauge2 div{border:1px solid var(--grid);border-radius:8px;padding:6px 9px;font-size:12px;color:var(--muted)}
+.gauge2 b{display:block;font:600 16px var(--gauge);color:var(--ink)}
+.row2{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.row2 .lbl{width:5.2em;color:var(--muted)}
+.alarmbox{display:flex;align-items:center;gap:8px;border:1px solid var(--grid);border-radius:8px;padding:7px 10px;font-size:13.5px}
+.alarmbox.bad{border-color:#F4B9B4;background:#FDECEA}
+.log{height:150px;overflow-y:auto;border:1px solid var(--grid);border-radius:8px;padding:6px 10px;font:12px/1.65 var(--gauge);background:var(--panel2)}
+.log div.t{color:var(--trip)}.log div.w{color:#B26F00}.log div.o{color:var(--ok)}.log div.m{color:var(--faint)}
+
+
+.hero h1{font-size:clamp(38px,7.2vw,92px);white-space:nowrap}
+@media(max-width:700px){.hero h1{white-space:normal}}
+.hero h1 .dash{color:var(--faint);margin:0 .08em}
+/* 概念 */
+.learn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.lc{padding:18px 20px;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start}
+.lc svg{width:120px;height:auto;display:block}
+.lc h3{margin:0 0 4px;font-size:18px;font-weight:600}
+.lc p{margin:0 0 8px;font-size:14.5px;color:var(--ink)}
+.lc .here{font-size:13.5px;color:var(--muted);border-left:3px solid var(--hot);padding-left:10px;margin:0}
+/* 数字 */
+.quiz{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.q{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.q h3{margin:0;font-size:15.5px;font-weight:600;line-height:1.5}
+.q .guess{display:flex;align-items:center;gap:10px}
+.q .guess output{font:600 15px var(--gauge);min-width:7.5em;text-align:right}
+.q .ans{display:none;font-size:13.5px;color:var(--muted);border-top:1px dashed var(--rule);padding-top:8px}
+.q.done .ans{display:block}
+.q .ans b{font:600 18px var(--gauge);color:var(--k345)}
+.q .verdict{font-weight:600}
+.score{margin:14px 0 0;font-size:14px;color:var(--muted)}
+.flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:26px}
+.flip{perspective:900px;height:190px;cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .55s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;backface-visibility:hidden;background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column}
+.flip .b{transform:rotateY(180deg);background:#F4F8FF;border-color:#C9D8F5}
+.flip .big{font:600 34px var(--gauge);color:var(--k345);line-height:1.1}
+.flip .t{font-size:15px;font-weight:600;margin-top:6px}
+.flip .h{margin-top:auto;font-size:12px;color:var(--faint)}
+.flip .b p{margin:0;font-size:13.5px;line-height:1.65}
+.flip .b .src{margin-top:auto;font-size:11.5px;color:var(--faint)}
+/* 保护整定步骤 */
+.steps{display:flex;gap:6px}
+.steps button{flex:1;border:1px solid var(--rule);background:var(--panel);border-radius:8px;padding:6px 4px;font-size:13px}
+.steps button.on{background:var(--k345);border-color:var(--k345);color:#fff}
+.stp{display:flex;flex-direction:column;gap:10px}
+.stp[hidden]{display:none}
+.legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.legend li{display:flex;gap:10px;align-items:flex-start}
+.legend .sw{flex:none;width:18px;height:18px;border-radius:50%;margin-top:2px}
+.pcs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pc{text-align:left;border:1px solid var(--rule);background:var(--panel);border-radius:9px;padding:8px 10px;font-size:12.5px;color:var(--muted);line-height:1.5}
+.pc b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+.pc:hover,.pc.on{border-color:var(--k345)}
+.pc.on{background:#EAF1FD}
+details.man summary{cursor:pointer;font-size:13px;color:var(--muted)}
+details.man[open]{display:flex;flex-direction:column;gap:8px}
+#testout .row{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;margin-top:4px}
+.goal{background:var(--panel2);border:1px solid var(--grid);border-radius:8px;padding:9px 12px;font-size:13.5px}
+@media(max-width:940px){.learn{grid-template-columns:1fr}}
+@media(max-width:560px){.lc{grid-template-columns:1fr}.pcs{grid-template-columns:1fr}}
+footer{padding:70px 0 50px;font-size:13.5px;color:var(--muted)}
+footer .cols{display:grid;grid-template-columns:1.3fr 1fr;gap:34px}
+footer h2{font-family:var(--display);font-weight:400;font-size:30px;color:var(--ink);margin:0 0 10px}
+footer ol{margin:0;padding-left:1.2em}
+
+@media(max-width:940px){
+  .replay-grid,.lab-grid,.rx-grid,.game-grid,footer .cols,.hero-grid{grid-template-columns:1fr}
+  .meter{text-align:left}
+  .chapters{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:560px){.wrap{padding:0 14px}.chapters{grid-template-columns:repeat(2,1fr)}.blk h2{font-size:34px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+section[id]{scroll-margin-top:64px}
+.video-shell video{aspect-ratio:16/9;object-fit:contain;background:#050608}
+.video-status{font-size:13px;color:var(--muted);margin:8px 0 0;min-height:1.7em}
+footer a{color:var(--k345);overflow-wrap:anywhere;text-underline-offset:3px}
+#rx{touch-action:none}
+@media(max-width:560px){.bar{flex-wrap:wrap;height:auto;gap:6px}.bar .sp{margin-left:0;flex-wrap:wrap}.rxc{padding:12px}.sl{gap:6px;grid-template-columns:5.5em minmax(0,1fr) 3em}.hero h1{overflow-wrap:anywhere}.hero-net .cap{position:static;display:block;margin:8px 12px 36px;font-size:11px;line-height:1.6}.panel,.ctrl{min-width:0}.game-grid,.replay-grid,.lab-grid,.rx-grid{grid-template-columns:minmax(0,1fr)}.gclock{flex-wrap:wrap;gap:8px}.row2{flex-wrap:wrap}.row2 input{width:auto;min-width:0;flex:1}.row2 .lbl{width:4.2em}.alarmbox{flex-wrap:wrap}.hero-net svg{min-height:75px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap">
+  <a class="brand" href="#top">美加大停电-失去的余度</a>
+  <a class="lk" href="#video">视频</a>
+  <a class="lk" href="#learn">概念</a>
+  <a class="lk" href="#replay">事故回放</a>
+  <a class="lk" href="#lab">潮流实验室</a>
+  <a class="lk" href="#relay">保护整定</a>
+  <a class="lk" href="#game">调度员挑战</a>
+  <a class="lk" href="#facts">数字</a>
+  <a class="lk" href="#refs">资料</a>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <h1>美加大停电<span class="dash">-</span>失去的余度</h1>
+  <div class="hero-grid">
+    <div>
+      <p class="sub">2003年8月14日，美国8个州和加拿大安大略省约5000万人相继断电。起点，只是俄亥俄的几条线路。</p>
+    </div>
+    <div class="meter"><div class="v" id="hmw">0</div><div class="c">MW 受影响负荷</div></div>
+  </div>
+  <div class="hero-net">
+    <svg id="hnet" viewBox="0 0 1200 250" aria-hidden="true"></svg>
+    <span class="cap">示意：故障从左侧局部开始逐级扩散；右侧绿色为最终仍保持供电的区域</span>
+    <button class="rp" id="hrp" type="button">重放</button>
+  </div>
+</div></header>
+
+<main>
+<section class="blk" id="video"><div class="wrap">
+  <h2>先看视频</h2>
+  <p class="hint">点击章节跳转。</p>
+  <div class="panel">
+    <div class="bar"><span class="led"></span>主视频<span class="id">约 2 分 57 秒</span></div>
+    <div class="video-shell">
+      <video id="vid" controls preload="metadata" playsinline poster="./poster.jpg" aria-label="美加大停电纪录片"></video>
+      <div class="vmiss" id="vmiss"><div id="video-error">视频暂时无法加载</div><button class="btn" id="vretry" type="button">重试播放</button><label>选择本地视频<input type="file" id="vpick" accept="video/*"></label></div>
+    </div>
+  </div>
+  <p class="video-status" id="video-status" role="status">正在准备视频…</p>
+  <div class="chapters" id="chapters"></div>
+</div></section>
+
+<section class="blk" id="learn"><div class="wrap">
+  <h2>先弄懂四个词</h2>
+  <p class="hint">看懂这四个概念，就看懂了这场事故的大半。</p>
+  <div class="learn">
+    <div class="panel lc">
+      <svg viewBox="0 0 120 100" aria-hidden="true"><rect x="10" y="40" width="100" height="22" rx="4" fill="#E3E9F0"/><rect x="10" y="40" width="62" height="22" rx="4" fill="#1B5BD6"/><rect x="72" y="40" width="22" height="22" fill="#EE9A0B"/><line x1="94" y1="30" x2="94" y2="72" stroke="#DF3329" stroke-width="2"/><text x="10" y="84" font-size="11" fill="#5A6B82">运行</text><text x="74" y="84" font-size="11" fill="#B26F00">余度</text><text x="86" y="24" font-size="11" fill="#DF3329">极限</text></svg>
+      <div><h3>余度</h3>
+        <p>电网正常运行时要留出"再坏一次也不出事"的空间。行业规则叫 N−1：失去规定故障集中任意一个元件（如一条线路或一台机组），其余设备都不能越限、不能引发连锁；出事后 30 分钟内要重新恢复到能再扛一次的状态。</p>
+        <p class="here">事后复核显示，15:05 时的系统能承受所检验的 800 多种单一故障。之后三条 345 kV 线路相继退出，余度一次次被吃掉，却没人及时补回来。</p></div>
+    </div>
+    <div class="panel lc">
+      <svg viewBox="0 0 120 100" aria-hidden="true"><circle cx="16" cy="50" r="8" fill="#0F1F35"/><circle cx="104" cy="50" r="8" fill="#0F1F35"/><path d="M24 46 Q60 8 96 46" stroke="#1B5BD6" stroke-width="7" fill="none"/><path d="M24 54 Q60 92 96 54" stroke="#1B5BD6" stroke-width="3" fill="none"/><text x="44" y="20" font-size="11" fill="#5A6B82">X 小</text><text x="44" y="92" font-size="11" fill="#5A6B82">X 大</text></svg>
+      <div><h3>潮流与控制</h3>
+        <p>潮流就是功率在各条线路上的分布。它不像水管能用阀门指定走向，而是由网架、节点电压相角和线路阻抗共同决定；简单并联通道中，电抗较小的通道通常分担更多功率。调度员能控制的是源头和结构：调整发电出力、切除部分负荷、改变开关状态。</p>
+        <p class="here">一条线退出，它的功率会自动挤到剩下的线路上。事后分析认为，若在萨米斯—斯塔线跳闸前，于克利夫兰—阿克伦地区切除约 1500 MW 负荷，可避免这次级联停电（官方报告第70页）。</p></div>
+    </div>
+    <div class="panel lc">
+      <svg viewBox="0 0 120 100" aria-hidden="true"><rect x="10" y="14" width="100" height="56" rx="5" fill="#0F1F35"/><polyline points="18,56 36,40 52,48 70,26 88,34 102,22" stroke="#17A158" stroke-width="2.5" fill="none"/><circle cx="98" cy="24" r="4" fill="#DF3329"/><rect x="50" y="70" width="20" height="10" fill="#8C9AAD"/><rect x="34" y="80" width="52" height="6" rx="2" fill="#8C9AAD"/></svg>
+      <div><h3>调度员</h3>
+        <p>在控制中心 24 小时值班，做三件事。看：盯住实时数据和报警。算：用状态估计和事故预想判断"如果再坏一个元件会怎样"。动：调出力、切负荷、下令操作开关。</p>
+        <p class="here">FE 报警功能在14:14后失效，使关键事件难以及时被发现；MISO 的状态估计和预想故障分析也长时间受阻。态势感知与协调不足，使纠正措施未能及时落实。</p></div>
+    </div>
+    <div class="panel lc">
+      <svg viewBox="0 0 120 100" aria-hidden="true"><path d="M10 70 Q35 20 60 50 T110 30" stroke="#1B5BD6" stroke-width="3" fill="none"/><path d="M10 70 Q35 60 60 72 T110 84" stroke="#DF3329" stroke-width="3" fill="none" stroke-dasharray="5 4"/><text x="72" y="22" font-size="11" fill="#1B5BD6">无功充足</text><text x="62" y="98" font-size="11" fill="#DF3329">无功不足</text></svg>
+      <div><h3>无功与电压</h3>
+        <p>有功功率用来做功，无功功率用来维持电磁场、撑住电压。无功远距离输送会增加电流、损耗和电压降，因此通常优先在负荷附近补足。炎热天气空调多，负荷吸收的无功也多；无功不够，电压就往下掉。</p>
+        <p class="here">伊斯特莱克电厂5号机组是克利夫兰地区重要的无功来源，恰恰在操作员提高它的无功出力时跳闸；当天该地区还有几组电容器正在例行检修。</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="blk" id="replay"><div class="wrap">
+  <h2>事故回放</h2>
+  <p class="hint">拖动时间轴，看调度屏上的设备状态怎样一步步变化。</p>
+  <div class="replay-grid">
+    <div class="panel">
+      <div class="bar"><span class="led" id="rled"></span>俄亥俄电网状态<span class="id">美国东部夏令时</span>
+        <span class="sp"><button class="btn pri" id="rplay" type="button">播放</button></span></div>
+      <div class="clockface"><span class="big" id="rclock">13:15:00</span><span class="z" id="rgap"></span></div>
+      <div class="scrub"><svg id="rscrub" viewBox="0 0 700 64"></svg>
+        <input type="range" id="rrange" min="0" max="1000" step="1" value="0" aria-label="事故时间"></div>
+      <div style="padding:0 16px 14px"><svg id="rmimic" viewBox="0 0 660 270" style="display:block;width:100%;height:auto"></svg>
+      <p class="note" style="padding:0 4px">示意接线，只表示各设备状态，不代表真实地理位置和拓扑。</p></div>
+    </div>
+    <div class="panel">
+      <div class="bar"><span class="led"></span>设备状态板</div>
+      <table class="board" id="board"></table>
+      <div class="evcard" id="evcard"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="blk" id="lab"><div class="wrap">
+  <h2>潮流实验室</h2>
+  <p class="hint">点选一条线路，可以断开它或改变它的电抗。发用电不变，潮流按电抗重新分配。</p>
+  <div class="lab-grid">
+    <div class="panel">
+      <div class="bar"><span class="led"></span>四节点直流潮流<span class="id">与视频模型相同</span>
+        <span class="sp"><button class="btn" id="predict" type="button">预测模式</button><button class="btn" id="lreset" type="button">复位</button></span></div>
+      <div class="stage"><svg id="net" viewBox="0 0 720 450"></svg><div class="toast" id="ltoast"></div></div>
+    </div>
+    <div class="panel">
+      <div class="bar"><span class="led"></span>线路检视</div>
+      <div class="insp">
+        <div id="inspBody"></div>
+        <div><h3>任务</h3><ul class="tasks" id="tasks"></ul></div>
+        <div><h3>N−1 扫描（初始电抗）</h3><table class="n1" id="n1"></table></div>
+        <p class="note">教学模型，不代表事故真实网架；未设线路额定容量，不判断过载。流动纹理只表示方向。</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="blk" id="relay"><div class="wrap">
+  <h2>保护整定挑战</h2>
+  <p class="hint">距离保护根据测得的电压、电流及其相位关系计算视在阻抗，并结合动作区和延时判断是否跳闸。按右边三步走：先读懂图，再看四种工况，最后试着自己整定。</p>
+  <div class="rx-grid">
+    <div class="panel rx">
+      <div class="bar"><span class="led" id="rxled"></span>R–X 阻抗平面<span class="id">可直接拖动橙点</span></div>
+      <svg id="rx" viewBox="0 0 470 380"></svg>
+    </div>
+    <div class="panel">
+      <div class="bar"><span class="led"></span>距离保护</div>
+      <div class="rxc">
+        <div class="steps" role="tablist">
+          <button class="on" data-st="1" type="button">1 读懂这张图</button>
+          <button data-st="2" type="button">2 四种工况</button>
+          <button data-st="3" type="button">3 整定挑战</button>
+        </div>
+        <div class="stp" data-sp="1">
+          <ul class="legend">
+            <li><span class="sw" style="background:var(--hot)"></span><span><b>橙点</b>：保护装置算出的视在阻抗 Z = 电压 ÷ 电流。正常运行时电流不大，Z 较大，点离原点较远。</span></li>
+            <li><span class="sw" style="background:rgba(223,51,41,.35);border:1.5px solid var(--trip)"></span><span><b>一区</b>：本线路大部分范围，点一进来立即跳闸。</span></li>
+            <li><span class="sw" style="background:rgba(238,154,11,.25);border:1.5px solid var(--hot)"></span><span><b>二区</b>：覆盖本线全长，延时 0.4 秒。</span></li>
+            <li><span class="sw" style="background:rgba(27,91,214,.15);border:1.5px dashed var(--k345)"></span><span><b>三区</b>：伸到相邻线路，作远后备，延时 1.5 秒。圈最大，也最容易"误会"。</span></li>
+          </ul>
+          <div class="goal">规则只有一条：点落进某个圈，并停留满这个圈的延时，就跳闸。</div>
+          <button class="btn pri" data-go="2" type="button">下一步：看四种工况</button>
+        </div>
+        <div class="stp" data-sp="2" hidden>
+          <div class="pcs">
+            <button class="pc" data-p="normal" type="button"><b>正常负荷</b>电压正常、电流适中。点在圈外，不动作。</button>
+            <button class="pc" data-p="near" type="button"><b>本线故障</b>本线路短路，电压骤降。点进一区，立即跳闸。</button>
+            <button class="pc" data-p="far" type="button"><b>远端故障</b>相邻线路短路。点只进三区，1.5 秒后跳闸，这是三区的本职。</button>
+            <button class="pc" data-p="heavy" type="button"><b>重载低压</b>没有任何短路，只是电流大、电压低。点也落进三区。</button>
+          </div>
+          <button class="btn hot" id="demo" type="button" style="border-color:var(--hot);color:#B26F00">演示 16:05:57 跳闸机理：从正常负荷到重载低压</button>
+          <details class="man"><summary>手动调节电压、电流、角度</summary>
+            <div class="sl"><span>电压</span><input type="range" id="sV" min="0.5" max="1.05" step="0.01" value="1"><output id="oV"></output></div>
+            <div class="sl"><span>电流</span><input type="range" id="sI" min="0.2" max="2.5" step="0.01" value="0.9"><output id="oI"></output></div>
+            <div class="sl"><span>角度</span><input type="range" id="sA" min="-10" max="85" step="1" value="18"><output id="oA"></output></div>
+          </details>
+          <button class="btn pri" data-go="3" type="button">下一步：整定挑战</button>
+        </div>
+        <div class="stp" data-sp="3" hidden>
+          <div class="goal"><b>目标：</b>远端故障时三区要动作，重载低压时三区不能动作。调整范围，必要时启用负荷限制区，然后点"运行测试"。</div>
+          <div class="sl"><span>三区整定阻抗</span><input type="range" id="sR" min="0.5" max="1.4" step="0.01" value="1.0"><output id="oR"></output></div>
+          <label style="display:flex;gap:8px;align-items:center;font-size:13.5px"><input type="checkbox" id="le">启用负荷限制区（把正常负荷所在的角度范围排除在外）</label>
+          <button class="btn pri" id="runtest" type="button">运行测试</button>
+          <div id="testout"></div>
+        </div>
+        <div class="zt">
+          <div>一区 瞬时<b id="z1t">—</b><div class="pb"><i id="z1b"></i></div></div>
+          <div>二区 0.4 s<b id="z2t">—</b><div class="pb"><i id="z2b"></i></div></div>
+          <div>三区 1.5 s<b id="z3t">—</b><div class="pb"><i id="z3b"></i></div></div>
+        </div>
+        <div class="rxstat" id="rxstat"></div>
+        <p class="note">动作圆、线路阻抗角 75° 和延时均为教学设定，非 Sammis–Star 真实整定。</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="blk" id="game"><div class="wrap">
+  <h2>调度员挑战</h2>
+  <p class="hint">60 秒内保住负荷中心的供电。树木会碰线，报警系统会失灵，过载线路 5 秒后会被保护切除。</p>
+  <div class="game-grid">
+    <div class="panel">
+      <div class="bar"><span class="led" id="gled"></span>模拟调度屏<span class="id">游戏设定</span>
+        <span class="sp"><span class="chip"><span style="width:14px;height:4px;background:var(--k345);display:inline-block"></span>345 kV</span><span class="chip"><span style="width:14px;height:3px;background:var(--k138);display:inline-block"></span>138 kV</span></span></div>
+      <div class="stage"><svg id="gsvg" class="g" viewBox="0 0 760 450"></svg><div class="toast" id="gtoast"></div></div>
+      <div class="overlay show" id="gover">
+        <h3 id="goh">准备值班</h3>
+        <p id="gop">点树木派班组修剪（只有一次机会）。用切负荷和西部电源出力控制潮流。报警失灵时屏幕上看不到负载率，要先重启。</p>
+        <div class="stars" id="gostars"></div>
+        <button class="btn pri" id="gostart" type="button" style="margin-top:8px">开始值班</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="bar"><span class="led" id="gled2"></span>操作台</div>
+      <div class="ctrl">
+        <div class="gclock"><span class="big" id="gclk">T+00</span>
+          <span style="display:flex;gap:6px"><button class="btn" id="gpause" type="button">暂停</button><button class="btn" id="grestart" type="button">重来</button></span></div>
+        <div class="gauge2">
+          <div>负荷<b id="gload">1200</b></div>
+          <div>南部电源<b id="gg1">700</b></div>
+          <div>西部电源<b id="gg2">500</b></div>
+        </div>
+        <div class="row2"><span class="lbl">切负荷</span><button class="btn" id="shed" type="button">切除 120 MW</button><button class="btn" id="unshed" type="button">恢复 120 MW</button></div>
+        <div class="row2"><span class="lbl">西部出力</span><input type="range" id="g2s" min="0" max="500" step="50" value="500"><span class="mono" id="g2o" style="width:3.5em;text-align:right">500</span></div>
+        <div class="alarmbox" id="alarm"><span class="led" id="aled"></span><span id="atxt">报警系统正常</span><button class="btn" id="arestart" type="button" style="margin-left:auto;display:none">重启</button></div>
+        <div class="alarmbox"><span class="led" id="cled"></span><span id="ctxt">巡线班组待命（可修剪 1 处）</span></div>
+        <div class="log" id="glog" aria-live="polite"></div>
+        <p class="note">游戏网络、限额和时间都是假设，只用来体验"余度一点点耗尽"的过程，不对应真实线路。南部电源自动平衡功率。</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+<section class="blk" id="facts"><div class="wrap">
+  <h2>数字里的大停电</h2>
+  <p class="hint">先猜，再揭晓。所有答案都来自官方调查报告或权威资料。</p>
+  <div class="quiz" id="quiz"></div>
+  <p class="score" id="qscore"></p>
+  <div class="flips" id="flips"></div>
+</div></section>
+</main>
+
+<footer id="refs"><div class="wrap cols">
+  <div><h2>主要资料</h2><ol>
+    <li id="ref1">U.S.-Canada Power System Outage Task Force. <a href="https://www.energy.gov/sites/prod/files/oeprod/DocumentsandMedia/BlackoutFinal-Web.pdf" target="_blank" rel="noopener">Final Report on the August 14, 2003 Blackout in the United States and Canada: Causes and Recommendations</a>[R]. 2004. 事件规模：第1页；N−1复核：第23、41页；1500 MW减载：第70页；级联与孤岛：第73–97页（均为报告印刷页码）。</li>
+    <li>Andersson G, Donalek P, Farmer R, et al. Causes of the 2003 major grid blackouts in North America and Europe, and recommended means to improve system dynamic performance[J]. IEEE Transactions on Power Systems, 2005, 20(4): 1922–1928. <a href="https://doi.org/10.1109/TPWRS.2005.857942" target="_blank" rel="noopener">DOI:10.1109/TPWRS.2005.857942</a>.</li>
+    <li>Dobson I, Carreras B A, Lynch V E, Newman D E. Complex systems analysis of series of blackouts: Cascading failure, critical points, and self-organization[J]. Chaos, 2007, 17(2): 026103. <a href="https://doi.org/10.1063/1.2737822" target="_blank" rel="noopener">DOI:10.1063/1.2737822</a>.</li>
+    <li>CBS/AP. <a href="https://www.cbsnews.com/news/more-power-to-them/" target="_blank" rel="noopener">More Power To Them</a>[N/OL]. 2003-08-15. 纽约60起严重火灾、克利夫兰约150万人停水。</li>
+    <li>Federal Energy Regulatory Commission. <a href="https://www.ferc.gov/industries-data/electric/industry-activities/nerc-standards" target="_blank" rel="noopener">NERC Standards</a>[EB/OL]. 美国强制性电力可靠性标准制度。</li></ol></div>
+  <div><h2>关于本页</h2>
+    <p>事件时间与主要数字取自官方最终报告（R1），线路负载率取自 Andersson 等（2005）。潮流实验室与视频使用同一四节点模型；保护整定与调度员挑战为教学设定。</p>
+    <p>AI 使用：原始页面由 Claude 协助编写；GPT-6 Astra 协助部署适配、播放器与资料核查。视频制作的 AI 使用情况见片尾。</p></div>
+</div></footer>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const mk=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const $=id=>document.getElementById(id);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* 直流潮流：在包含 slack 的连通分量上求解 */
+function dcFlow(nodes,lines,P,slack){
+  const adj={};nodes.forEach(n=>adj[n]=[]);lines.forEach(l=>{adj[l.a].push(l.b);adj[l.b].push(l.a)});
+  const seen=new Set([slack]),q=[slack];while(q.length){const n=q.shift();adj[n].forEach(m=>{if(!seen.has(m)){seen.add(m);q.push(m)}})}
+  const idx=[...seen].filter(n=>n!==slack),n=idx.length;
+  const M=Array.from({length:n},()=>Array(n+1).fill(0));idx.forEach((k,i)=>M[i][n]=(P[k]||0)/100);
+  lines.forEach(l=>{const ia=idx.indexOf(l.a),ib=idx.indexOf(l.b),y=1/l.x;if(ia>=0)M[ia][ia]+=y;if(ib>=0)M[ib][ib]+=y;if(ia>=0&&ib>=0){M[ia][ib]-=y;M[ib][ia]-=y}});
+  for(let c=0;c<n;c++){let p=c;for(let r=c+1;r<n;r++)if(Math.abs(M[r][c])>Math.abs(M[p][c]))p=r;[M[c],M[p]]=[M[p],M[c]];
+    for(let r=0;r<n;r++){if(r===c)continue;const k=M[r][c]/M[c][c];for(let j=c;j<=n;j++)M[r][j]-=k*M[c][j]}}
+  const th={};th[slack]=0;idx.forEach((k,i)=>th[k]=M[i][n]/M[i][i]);
+  const f={};lines.forEach(l=>{f[l.id]=(th[l.a]!==undefined&&th[l.b]!==undefined)?(th[l.a]-th[l.b])/l.x*100:0});
+  return{f,comp:seen};
+}
+function toaster(el){let t;return(msg,kind)=>{el.textContent=msg;el.className='toast show'+(kind?' '+kind:'');clearTimeout(t);t=setTimeout(()=>el.classList.remove('show'),3200)}}
+
+/* ===== 开场 ===== */
+(function(){
+  const svg=$('hnet');
+  const B=[[60,70],[60,180],[180,40],[190,130],[170,215],[320,80],[330,190],[460,50],[470,140],[450,220],[600,90],[610,190],[740,50],[750,150],[730,225],[880,80],[890,190],[1020,60],[1030,150],[1020,225],[1140,110],[1150,210]];
+  const E=[[0,2],[0,3],[1,3],[1,4],[2,5],[3,5],[3,6],[4,6],[5,7],[5,8],[6,8],[6,9],[7,10],[8,10],[8,11],[9,11],[10,12],[10,13],[11,13],[11,14],[12,15],[13,15],[13,16],[14,16],[15,17],[15,18],[16,18],[16,19],[17,20],[18,20],[18,21],[19,21],[2,3],[7,8],[12,13],[17,18],[20,21]];
+  const lv=new Set([32,33,34,35,36]);
+  const island=new Set([17,18,19,20,21]);
+  const il=mk('text',{x:1085,y:22,'text-anchor':'middle',style:'font:12px var(--body);fill:#17A158'},svg);il.textContent='仍有供电';
+  const eEl=E.map(([a,b],i)=>mk('line',{class:'e'+(lv.has(i)?' lv':''),x1:B[a][0],y1:B[a][1],x2:B[b][0],y2:B[b][1]},svg));
+  const bEl=B.map(([x,y])=>{const g=mk('g',{},svg);mk('rect',{class:'b',x:x-4,y:y-13,width:8,height:26,rx:1},g);const l=mk('circle',{class:'led2',cx:x+11,cy:y-11,r:3},g);return{g,l,r:g.firstChild}});
+  let T=[];
+  function play(){
+    T.forEach(clearTimeout);T=[];eEl.forEach(e=>e.classList.remove('x'));bEl.forEach(b=>{b.l.classList.remove('x');b.r.classList.remove('x')});$('hmw').textContent='0';
+    const order=E.map((e,i)=>({i,x:Math.min(B[e[0]][0],B[e[1]][0])})).filter(o=>!(island.has(E[o.i][0])&&island.has(E[o.i][1]))).sort((a,b)=>a.x-b.x);
+    const kill=(o,k)=>{eEl[o.i].classList.add('x');E[o.i].forEach(n=>{if(!island.has(n)){bEl[n].l.classList.add('x');bEl[n].r.classList.add('x')}})};
+    if(reduce){order.forEach(kill);$('hmw').textContent='61,800';return}
+    const start=900,step=95;
+    order.forEach((o,k)=>T.push(setTimeout(()=>kill(o,k),start+(k<3?k*450:1350+(k-3)*step))));
+    const total=start+1350+(order.length-3)*step;
+    const t0=performance.now()+start+900;
+    const cnt=()=>{const k=Math.max(0,Math.min(1,(performance.now()-t0)/(total-start-900)));$('hmw').textContent=Math.round(61800*k*k).toLocaleString('en-US');if(k<1)T.push(setTimeout(cnt,40))};
+    T.push(setTimeout(cnt,start+900));
+  }
+  play();$('hrp').onclick=play;
+})();
+
+/* ===== 视频 ===== */
+const VIDEO_SRC="./video.mp4";
+const CHAPTERS=[{t:0,n:"开场"},{t:9.7,n:"回溯俄亥俄"},{t:51.1,n:"保护与潮流"},{t:80.1,n:"低压与距离保护"},{t:127.1,n:"级联与分区"},{t:149.1,n:"影响与根因"},{t:170.9,n:"来源与AI"}];
+const VEND=176.9;
+const vid=$('vid');
+(function(){
+  let hls=null, objectUrl=null, generation=0, mediaRetries=0;
+  const status=$('video-status'), missing=$('vmiss');
+  const fail=msg=>{status.textContent=msg;$('video-error').textContent=msg;missing.classList.add('show')};
+  function clear(){if(hls){hls.destroy();hls=null}if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}missing.classList.remove('show');vid.removeAttribute('src');vid.load()}
+  async function start(){
+    const ticket=++generation;clear();mediaRetries=0;status.textContent='正在加载视频…';
+    if(location.protocol==='file:'){vid.src=VIDEO_SRC;return}
+    const playlist=new URL('./hls/index.m3u8',location.href).href;
+    if(vid.canPlayType('application/vnd.apple.mpegurl')){vid.src=playlist;return}
+    try{
+      if(!window.Hls)await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='./vendor/hls.min.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});
+      if(ticket!==generation)return;
+      if(!Hls.isSupported()){fail('当前浏览器不支持此视频格式，请使用新版 Chrome、Edge 或 Safari。');return}
+      hls=new Hls({maxBufferLength:18,maxMaxBufferLength:30,backBufferLength:12,startFragPrefetch:false});
+      hls.on(Hls.Events.ERROR,(_,data)=>{if(!data.fatal)return;if(data.type===Hls.ErrorTypes.MEDIA_ERROR&&mediaRetries++<1){hls.recoverMediaError();return}fail('视频加载中断，请检查网络后重试。');hls.stopLoad()});
+      hls.loadSource(playlist);hls.attachMedia(vid);
+    }catch(e){if(ticket===generation)fail('播放器加载失败，请检查网络后重试。')}
+  }
+  vid.addEventListener('loadedmetadata',()=>{missing.classList.remove('show');status.textContent='原画质 · 2分57秒 · 点击播放或选择章节'});
+  vid.addEventListener('error',()=>{if(vid.currentSrc)fail(location.protocol==='file:'?'未找到配套视频，请选择本地 MP4。':'视频暂时无法播放，请重试。')});
+  $('vretry').onclick=start;
+  $('vpick').onchange=e=>{const f=e.target.files[0];if(!f)return;++generation;clear();objectUrl=URL.createObjectURL(f);vid.src=objectUrl;status.textContent='已选择本地视频，仅本次页面有效';e.target.value=''};
+  start();
+  const box=$('chapters'),fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+  CHAPTERS.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='chap';b.innerHTML='<i class="fill"></i><span class="t">'+fmt(c.t)+'</span>'+c.n;b.onclick=()=>seek(c.t);box.appendChild(b)});
+  vid.addEventListener('timeupdate',()=>{const t=vid.currentTime;[...box.children].forEach((b,i)=>{const s=CHAPTERS[i].t,e=(CHAPTERS[i+1]||{t:VEND}).t;b.querySelector('.fill').style.width=Math.max(0,Math.min(1,(t-s)/(e-s)))*100+'%';b.classList.toggle('on',t>=s&&t<e)})});
+})();
+function seek(t){$('video').scrollIntoView({behavior:'smooth'});try{vid.currentTime=t;const p=vid.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
+
+/* ===== 事故回放 ===== */
+(function(){
+  const m=(h,mi,s=0)=>h*60+mi+s/60;
+  const T0=m(12,0),T1=m(15,0),T2=m(16,15);
+  const toMin=p=>p<=350?T0+p/350*(T1-T0):T1+(p-350)/650*(T2-T1);
+  const toP=t=>t<=T1?(t-T0)/(T1-T0)*350:350+(t-T1)/(T2-T1)*650;
+  const EV=[
+    {t:m(12,15),w:"12:15",h:"MISO 状态估计器失去作用",d:"区域协调员的监视工具因缺少一条外部线路的实时数据，给不出有效结果，失去了看全局的能力。",v:9.7},
+    {t:m(13,31),w:"13:31",h:"伊斯特莱克电厂5号机组退出",d:"操作员正在提高这台 597 MW 机组的无功出力，机组保护判定超出能力而跳闸。这削弱了当地电压支撑，但尚未立即破坏 N−1 安全性。",v:20.0},
+    {t:m(14,14),w:"14:14",h:"FE 控制室报警功能失效",d:"此后关键跳闸未能正常触发控制室报警，调度员未能及时识别事故范围；并非所有遥测画面都停止更新。",v:29.1},
+    {t:m(15,5,41),w:"15:05:41",h:"Chamberlin–Harding 跳闸",d:"负载率只有约 44% 时与过高的树木闪络接地。这次跳闸由导线与树木间绝缘净空不足引发，不能仅凭负载率低就认为线路安全。",v:44},
+    {t:m(15,32,3),w:"15:32:03",h:"Hanna–Juniper 跳闸",d:"负载率约 88% 时同样碰树跳闸，潮流继续向剩余通道转移。",v:72.1},
+    {t:m(15,39),w:"15:39",h:"138 kV 网络开始连锁跳闸",d:"功率挤向下层网络，电压下降，约十六条 138 kV 线路在此后半小时内陆续跳闸。",v:91.1},
+    {t:m(15,41),w:"15:41",h:"Star–South Canton 跳闸",d:"负载率约 93% 时碰树跳闸，第三条 345 kV 线路退出。",v:72.1},
+    {t:m(16,5,57),w:"16:05:57",h:"Sammis–Star 跳闸",d:"线路上没有短路。重载低压使视在阻抗落入三区，保护动作，级联从这里开始失控。",v:97.1},
+    {t:m(16,10,46),w:"16:10:46",h:"东北部电网进一步分裂成多个孤岛",d:"大区域已与主网分离，此后继续分裂成多个孤岛。各孤岛的发电与负荷能否平衡，决定是否继续失电。",v:127.1}
+  ];
+  const ROWS=[
+    {n:"MISO 状态估计器",f:t=>t<EV[0].t?['ok','正常']:t<m(16,4)?['warn','估计/预想故障分析受阻']:['ok','分析工具恢复']},
+    {n:"Eastlake 5 机组",f:t=>t<EV[1].t?['ok','运行']:['trip','退出']},
+    {n:"FE 报警系统",f:t=>t<EV[2].t?['ok','正常']:['warn','失效']},
+    {n:"Chamberlin–Harding 345 kV",f:t=>t<EV[3].t?['ok','合闸']:['trip','分闸']},
+    {n:"Hanna–Juniper 345 kV",f:t=>t<EV[4].t?['ok','合闸']:['trip','分闸']},
+    {n:"Star–South Canton 345 kV",f:t=>t<EV[6].t?['ok','合闸']:['trip','分闸']},
+    {n:"北俄亥俄 138 kV 网络",f:t=>t<EV[5].t?['ok','正常']:t<m(16,8)?['warn','陆续跳闸']:['trip','约16条跳闸'],p:t=>Math.max(0,Math.min(1,(t-EV[5].t)/(m(16,8)-EV[5].t)))},
+    {n:"Sammis–Star 345 kV",f:t=>t<EV[7].t?['ok','合闸']:['trip','三区动作']},
+    {n:"东部互联电网",f:t=>t<EV[7].t?['ok','联网运行']:t<EV[8].t?['warn','级联扩散']:['trip','解列']}
+  ];
+  const mm=$('rmimic');
+  const LX=440,LY=150;
+  mk('rect',{x:LX,y:LY-62,width:190,height:124,rx:8,fill:'#F5F8FB',stroke:'#D4DDE7'},mm);
+  const lt=mk('text',{x:LX+95,y:LY+40,'text-anchor':'middle',style:'font:600 13px var(--body);fill:#0F1F35'},mm);lt.textContent='克利夫兰—阿克伦负荷区';
+  const lvl=[];[[LX+20,LY-40,LX+80,LY-10],[LX+80,LY-10,LX+150,LY-38],[LX+30,LY+10,LX+100,LY-5],[LX+100,LY-5,LX+170,LY+15],[LX+20,LY-40,LX+30,LY+10],[LX+150,LY-38,LX+170,LY+15],[LX+80,LY-10,LX+100,LY-5]].forEach(([a,b,c,d])=>lvl.push(mk('line',{x1:a,y1:b,x2:c,y2:d,stroke:'#0B9A89','stroke-width':2.5,'stroke-linecap':'round'},mm)));
+  const k138=mk('text',{x:LX+175,y:LY-48,'text-anchor':'end',style:'font:11px var(--gauge);fill:#0B9A89'},mm);k138.textContent='138 kV';
+  const EL=[['Chamberlin–Harding',40,3],['Hanna–Juniper',96,4],['Star–South Canton',152,6],['Sammis–Star',208,7]];
+  const eln=EL.map(([n,y,i])=>{const y2=LY-40+(y-40)/168*80,mx=(110+LX)/2,my=(y+y2)/2;const l=mk('line',{x1:110,y1:y,x2:LX,y2,stroke:'#1B5BD6','stroke-width':4,'stroke-linecap':'round'},mm);
+    mk('rect',{x:26,y:y-12,width:80,height:24,rx:4,fill:'#fff',stroke:'#D4DDE7'},mm);const t=mk('text',{x:66,y:y+4,'text-anchor':'middle',style:'font:11px var(--gauge);fill:#5A6B82'},mm);t.textContent='外部电网';
+    const lb=mk('text',{x:mx,y:my-14,'text-anchor':'middle',style:'font:12px var(--body);fill:#0F1F35'},mm);lb.textContent=n+' 345 kV';
+    const bx=mk('rect',{x:mx-7,y:my-7,width:14,height:14,rx:2,fill:'#fff',stroke:'#1B5BD6','stroke-width':2},mm);return{l,bx,i}});
+  const gx=LX+95,gy=34;mk('line',{x1:gx,y1:gy+16,x2:gx,y2:LY-62,stroke:'#0F1F35','stroke-width':2},mm);
+  const gc=mk('circle',{cx:gx,cy:gy,r:16,fill:'#fff',stroke:'#0F1F35','stroke-width':2},mm);mk('path',{d:`M${gx-9} ${gy} q4.5 -8 9 0 t9 0`,fill:'none',stroke:'#0F1F35','stroke-width':2},mm);
+  const gt=mk('text',{x:gx+24,y:gy+4,style:'font:12px var(--body);fill:#0F1F35'},mm);gt.textContent='Eastlake 5';
+  const alr=mk('rect',{x:LX,y:236,width:190,height:24,rx:4,fill:'#fff',stroke:'#D4DDE7'},mm);const alt=mk('text',{x:LX+95,y:252,'text-anchor':'middle',style:'font:12px var(--body)'},mm);
+  function mimic(t){
+    eln.forEach(o=>{const open=t>=EV[o.i].t;o.l.setAttribute('stroke',open?'#DF3329':'#1B5BD6');o.l.setAttribute('stroke-dasharray',open?'6 7':'');o.l.setAttribute('stroke-width',open?2:4);o.bx.setAttribute('fill',open?'#fff':'#1B5BD6');o.bx.setAttribute('stroke',open?'#DF3329':'#1B5BD6')});
+    const p=Math.max(0,Math.min(1,(t-EV[5].t)/(m(16,8)-EV[5].t)));const n=Math.round(p*lvl.length);lvl.forEach((l,i)=>{l.setAttribute('stroke',i<n?'#DF3329':'#0B9A89');l.setAttribute('stroke-dasharray',i<n?'4 5':'')});
+    const off=t>=EV[1].t;gc.setAttribute('stroke',off?'#DF3329':'#0F1F35');gc.setAttribute('fill',off?'#FDECEA':'#fff');gt.textContent='Eastlake 5 '+(off?'退出':'运行');
+    const af=t>=EV[2].t;alr.setAttribute('fill',af?'#FFF4E0':'#fff');alr.setAttribute('stroke',af?'#EE9A0B':'#D4DDE7');alt.setAttribute('style','font:12px var(--body);fill:'+(af?'#B26F00':'#5A6B82'));alt.textContent=af?'FE 控制室报警：失效':'FE 控制室报警：正常';
+  }
+  const board=$('board');
+  ROWS.forEach(r=>{const tr=document.createElement('tr');tr.innerHTML='<td>'+r.n+(r.p?'<div class="pb"><i></i></div>':'')+'</td><td class="s"><span class="led"></span> <span class="tx"></span></td>';board.appendChild(tr);r.tr=tr;r.last=''});
+  const sv=$('rscrub');
+  mk('rect',{x:0,y:26,width:700,height:6,rx:3,fill:'#E3E9F0'},sv);
+  const X=p=>p/1000*700;
+  mk('rect',{x:X(toP(EV[5].t)),y:24,width:X(toP(m(16,8)))-X(toP(EV[5].t)),height:10,rx:3,fill:'#EE9A0B',opacity:.35},sv);
+  [[m(12,0),'12:00'],[m(13,0),'13:00'],[m(14,0),'14:00'],[m(15,0),'15:00'],[m(15,30),'15:30'],[m(16,0),'16:00']].forEach(([t,l])=>{const t2=mk('text',{class:'tk',x:Math.max(14,X(toP(t))),y:58,'text-anchor':'middle'},sv);t2.textContent=l});
+  mk('path',{d:`M${X(350)-6} 22 l4 14 l4 -14`,stroke:'#8C9AAD',fill:'none'},sv);
+  EV.forEach((e,i)=>{const c=mk('circle',{cx:X(toP(e.t)),cy:29,r:5,fill:i<3?'#EE9A0B':'#DF3329',stroke:'#fff','stroke-width':2,style:'cursor:pointer'},sv);c.onclick=()=>{stop();set(toP(e.t)+.3)}});
+  const head=mk('line',{x1:0,y1:14,x2:0,y2:44,stroke:'#1B5BD6','stroke-width':2},sv);
+  const range=$('rrange');range.step='0.1';let cur=-1,pos=0;
+  const fmt=t=>{const h=Math.floor(t/60),mi=Math.floor(t%60),s=Math.floor((t*60)%60);return String(h).padStart(2,'0')+':'+String(mi).padStart(2,'0')+':'+String(s).padStart(2,'0')};
+  function set(p){
+    pos=Math.max(0,Math.min(1000,p));range.value=pos;const t=toMin(pos);$('rclock').textContent=fmt(t);head.setAttribute('x1',X(pos));head.setAttribute('x2',X(pos));
+    const el=t-EV[1].t;$('rgap').textContent=el>0?'距第一台机组退出 '+Math.floor(el/60)+' 小时 '+Math.floor(el%60)+' 分':'';
+    let worst='ok';
+    ROWS.forEach(r=>{const [s,tx]=r.f(t);r.tr.querySelector('.led').className='led '+(s==='ok'?'':s);r.tr.querySelector('.tx').textContent=tx;
+      if(r.p){r.tr.querySelector('.pb i').style.width=r.p(t)*100+'%'}
+      if(r.last&&r.last!==s){r.tr.classList.remove('flash');void r.tr.offsetWidth;r.tr.classList.add('flash')}r.last=s;
+      if(s==='trip')worst='trip';else if(s==='warn'&&worst!=='trip')worst='warn'});
+    $('rled').className='led '+(worst==='ok'?'':worst);mimic(t);
+    let k=-1;EV.forEach((e,i)=>{if(t>=e.t)k=i});
+    if(k!==cur){cur=k;const c=$('evcard');
+      if(k<0)c.innerHTML='<p style="margin:0">中午时分，一切正常。点"播放"或拖动时间轴。</p>';
+      else{const e=EV[k];c.innerHTML='<div class="when">'+e.w+'</div><h3>'+e.h+'</h3><p>'+e.d+'</p><button class="btn" type="button">在视频中观看</button>';c.querySelector('button').onclick=()=>seek(e.v)}}
+  }
+  range.oninput=()=>{stop();set(+range.value)};
+  let raf=null;
+  function stop(){if(raf){cancelAnimationFrame(raf);raf=null}$('rplay').textContent='播放'}
+  const EP=EV.map(e=>toP(e.t));
+  $('rplay').onclick=()=>{
+    if(raf){stop();return}
+    if(pos>=999)set(0);
+    $('rplay').textContent='暂停';let last=performance.now(),hold=0;
+    const st=now=>{const dt=Math.min(.1,(now-last)/1000);last=now;
+      if(hold>0){hold-=dt}else{
+        const sp=pos<350?55:pos<860?36:14;let np=Math.min(1000,pos+sp*dt);
+        const hit=EP.find(p=>p>pos&&p<=np);if(hit!==undefined){np=hit+.05;hold=1.3}
+        set(np)}
+      if(pos<1000)raf=requestAnimationFrame(st);else stop()};
+    raf=requestAnimationFrame(st);
+  };
+  set(0);
+})();
+
+/* ===== 潮流实验室 ===== */
+(function(){
+  const svg=$('net'),toast=toaster($('ltoast'));
+  const P={A:[120,235],B:[360,78],C:[360,392],D:[600,235]};
+  const X0={AB:.10,AC:.15,BC:.20,BD:.20,CD:.10};
+  const L=[['AB','A','B'],['AC','A','C'],['BC','B','C'],['BD','B','D'],['CD','C','D']].map(([id,a,b])=>({id,a,b,x:X0[id]}));
+  const INJ={A:120,B:0,C:0,D:-120};
+  const out=new Set();let sel=null,predict=false,pend=null;
+  const name=id=>id[0]+'–'+id[1];
+  function solve(o=out,xs=null){
+    const live=L.filter(l=>!o.has(l.id)).map(l=>({...l,x:xs?xs[l.id]:l.x}));
+    const r=dcFlow(['A','B','C','D'],live,INJ,'D');
+    if(!r.comp.has('A'))return{island:true,f:Object.fromEntries(L.map(l=>[l.id,0]))};
+    const f={};L.forEach(l=>f[l.id]=o.has(l.id)?0:(r.f[l.id]||0));return{island:false,f};
+  }
+  const BASE=solve(new Set(),X0).f;
+  const G={};
+  L.forEach(l=>{
+    const [x1,y1]=P[l.a],[x2,y2]=P[l.b];const g=mk('g',{class:'ln',tabindex:0,role:'button'},svg);
+    mk('line',{class:'wire',x1,y1,x2,y2},g);const band=mk('line',{class:'band',x1,y1,x2,y2},g);
+    const flow=mk('line',{class:'flow',x1,y1,x2,y2},g);mk('line',{class:'hit',x1,y1,x2,y2},g);
+    const mx=(x1+x2)/2,my=(y1+y2)/2;let ox=0,oy=0;
+    if(l.id==='BC'){ox=76}else{const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy);let nx=-dy/len,ny=dx/len;if((mx-360)*nx+(my-235)*ny<0){nx=-nx;ny=-ny}ox=nx*54;oy=ny*42}
+    const tag=mk('g',{class:'tag',transform:`translate(${mx+ox},${my+oy})`},g);
+    mk('rect',{x:-60,y:-21,width:120,height:42,rx:6},tag);
+    const v=mk('text',{class:'v',x:0,y:-2,'text-anchor':'middle'},tag),d=mk('text',{class:'d',x:0,y:13,'text-anchor':'middle'},tag);
+    G[l.id]={g,band,flow,v,d};
+    const act=()=>click(l.id);g.addEventListener('click',act);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
+  });
+  Object.entries(P).forEach(([k,[x,y]])=>{const g=mk('g',{class:'bus'},svg);mk('rect',{x:x-5,y:y-20,width:10,height:40,rx:1.5},g);
+    const t=mk('text',{x:k==='A'?x-30:k==='D'?x+22:x+14,y:k==='B'?y-26:k==='C'?y+38:y+6,'text-anchor':k==='A'?'end':'start'},g);t.textContent='节点'+k;
+    if(k==='A'){const s=mk('text',{class:'inj',x,y:y+44,'text-anchor':'middle'},g);s.textContent='发电 120 MW'}
+    if(k==='D'){const s=mk('text',{class:'inj',x,y:y+44,'text-anchor':'middle'},g);s.textContent='负荷 120 MW'}});
+  let shown={...BASE},anim=false,raf;
+  function draw(fl,fin){
+    L.forEach(l=>{const o=G[l.id],p=fl[l.id],isOut=out.has(l.id);
+      o.g.classList.toggle('out',isOut);o.g.classList.toggle('sel',sel===l.id);o.g.classList.toggle('guess',pend===l.id);
+      o.band.setAttribute('stroke-width',isOut?0:2+Math.abs(p)/120*16);
+      o.flow.classList.toggle('rev',p<0);o.flow.style.opacity=(!isOut&&Math.abs(p)>.5)?'':'0';
+      const up=!isOut&&Math.abs(fin[l.id])-Math.abs(BASE[l.id])>3;o.g.classList.toggle('up',up);
+      if(anim){o.v.textContent='…';o.d.textContent='过渡示意';return}
+      if(isOut){o.v.textContent='已断开';o.d.textContent='原 '+Math.abs(BASE[l.id]).toFixed(1)+' MW';return}
+      const a=p>=0?l.a:l.b,b=p>=0?l.b:l.a;o.v.textContent=a+'→'+b+' '+Math.abs(p).toFixed(1);
+      const flip=Math.sign(p)!==Math.sign(BASE[l.id])&&Math.abs(p)>.5,dm=Math.abs(p)-Math.abs(BASE[l.id]);
+      o.d.textContent=flip?'方向反转':Math.abs(dm)<.05?'MW':((dm>0?'+':'−')+Math.abs(dm).toFixed(1)+' MW')});
+  }
+  function update(msg){
+    const r=solve(),tg=r.f,from={...shown};
+    if(r.island)toast('A 与负荷之间已无通路','bad');else if(msg)toast(msg);
+    else{const fl=L.find(l=>!out.has(l.id)&&Math.sign(tg[l.id])!==Math.sign(BASE[l.id])&&Math.abs(tg[l.id])>.5);if(fl)toast(name(fl.id)+' 潮流反向')}
+    tasks();insp();
+    if(reduce){shown=tg;draw(tg,tg);return}
+    const t0=performance.now();anim=true;cancelAnimationFrame(raf);
+    const st=now=>{const k=Math.min(1,(now-t0)/800),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;const c={};L.forEach(l=>c[l.id]=from[l.id]+(tg[l.id]-from[l.id])*e);shown=c;
+      if(k<1){draw(c,tg);raf=requestAnimationFrame(st)}else{anim=false;shown=tg;draw(tg,tg)}};
+    raf=requestAnimationFrame(st);
+  }
+  function click(id){
+    if(predict&&!out.has(id)){
+      if(!pend){pend=id;sel=id;draw(shown,solve().f);toast('猜一猜：断开 '+name(id)+' 后，哪条线最重？点击它');return}
+      if(id===pend){pend=null;draw(shown,solve().f);return}
+      const guess=id;out.add(pend);const r=solve();const live=L.filter(l=>!out.has(l.id));
+      const best=live.sort((a,b)=>Math.abs(r.f[b.id])-Math.abs(r.f[a.id]))[0];
+      const ok=best&&best.id===guess;sel=pend;pend=null;
+      update(ok?'猜对了：'+name(best.id)+' 最重':'不对，最重的是 '+(best?name(best.id):'—'));
+      if(ok)done.add('guess');
+      setTimeout(()=>toast(ok?'猜对了：'+name(best.id)+' 最重':'不对，最重的是 '+(best?name(best.id):'—'),ok?'good':'bad'),30);
+      return}
+    sel=id;insp();draw(shown,solve().f);
+  }
+  function insp(){
+    const b=$('inspBody');if(!sel){b.innerHTML='<p class="note" style="font-size:13.5px;color:var(--muted)">点击图中一条线路开始。</p>';return}
+    const l=L.find(k=>k.id===sel),isOut=out.has(sel);
+    b.innerHTML='<h3>'+name(sel)+'</h3><div class="kv" style="margin-top:8px"><span>电抗</span><input type="range" id="xs" min="0.05" max="0.40" step="0.01" value="'+l.x+'"'+(isOut?' disabled':'')+'><output id="xo">'+l.x.toFixed(2)+'</output></div>'+
+      '<div style="display:flex;gap:8px;margin-top:10px"><button class="btn '+(isOut?'':'pri')+'" id="brk" type="button">'+(isOut?'合闸恢复':'断开线路')+'</button><button class="btn" id="xr" type="button">电抗复原</button></div>';
+    $('xs').oninput=e=>{l.x=+e.target.value;$('xo').textContent=l.x.toFixed(2);const r=solve();shown=r.f;draw(r.f,r.f);tasks()};
+    $('xs').onchange=()=>update();
+    $('brk').onclick=()=>{isOut?out.delete(sel):out.add(sel);update()};
+    $('xr').onclick=()=>{l.x=X0[sel];update()};
+  }
+  const done=new Set();
+  const TASKS=[
+    {id:'rev',t:'让 B–C 的潮流反向',ok:f=>!out.has('BC')&&f.BC<-0.5},
+    {id:'x',t:'不断线，只调电抗，让 A–C 超过 90 MW（一条线不够）',ok:f=>out.size===0&&f.AC>90},
+    {id:'min',t:'找出退出后影响最小的线路（断开它）',ok:()=>out.size===1&&out.has('BC')},
+    {id:'guess',t:'在预测模式下猜对一次',ok:()=>done.has('guess')}
+  ];
+  const tl=$('tasks');TASKS.forEach(k=>{const li=document.createElement('li');li.innerHTML='<span class="ck">✓</span><span>'+k.t+'</span>';tl.appendChild(li);k.li=li});
+  function tasks(){const r=solve();TASKS.forEach(k=>{if(k.ok(r.f))done.add(k.id);if(done.has(k.id)&&!k.li.classList.contains('done')){k.li.classList.add('done');toast('任务完成：'+k.t,'good')}})}
+  const n1=$('n1');const rows=L.map(l=>{const r=solve(new Set([l.id]),X0);if(r.island)return{l,isl:1,v:0};const w=L.filter(m=>m.id!==l.id).sort((p,q)=>Math.abs(r.f[q.id])-Math.abs(r.f[p.id]))[0];return{l,w,v:Math.abs(r.f[w.id])}});
+  const mx=Math.max(...rows.map(r=>r.v));
+  rows.forEach(r=>{const tr=document.createElement('tr');if(r.v===mx)tr.className='worst';tr.innerHTML='<td>断开 '+name(r.l.id)+'</td><td>'+(r.isl?'A 被隔离':'最重 '+name(r.w.id))+'</td><td class="num">'+(r.isl?'—':r.v.toFixed(1)+' MW')+'</td>';
+    tr.onclick=()=>{L.forEach(k=>k.x=X0[k.id]);out.clear();out.add(r.l.id);sel=r.l.id;update()};n1.appendChild(tr)});
+  $('predict').onclick=()=>{predict=!predict;pend=null;$('predict').classList.toggle('on',predict);toast(predict?'预测模式：先点要断开的线，再点你认为最重的线':'预测模式已关闭');draw(shown,solve().f)};
+  $('lreset').onclick=()=>{out.clear();L.forEach(k=>k.x=X0[k.id]);sel=null;pend=null;update('已复位')};
+  draw(BASE,BASE);insp();
+})();
+
+/* ===== 保护整定挑战 ===== */
+(function(){
+  const svg=$('rx'),S=210,R0=-.55,X1=1.35;
+  const px=r=>30+(r-R0)*S,py=x=>14+(X1-x)*S;
+  const inv=(sx,sy)=>[(sx-30)/S+R0,X1-(sy-14)/S];
+  for(let r=-.5;r<=1.5;r+=.25)mk('line',{class:'gr',x1:px(r),y1:py(1.35),x2:px(r),y2:py(-.35)},svg);
+  for(let x=-.25;x<=1.25;x+=.25)mk('line',{class:'gr',x1:px(-.55),y1:py(x),x2:px(1.5),y2:py(x)},svg);
+  mk('line',{class:'ax',x1:px(-.55),y1:py(0),x2:px(1.5),y2:py(0)},svg);mk('line',{class:'ax',x1:px(0),y1:py(1.35),x2:px(0),y2:py(-.35)},svg);
+  const tR=mk('text',{x:px(1.5)-4,y:py(0)-6,'text-anchor':'end'},svg);tR.textContent='R（电阻）';const tX=mk('text',{x:px(0)+6,y:py(1.35)+12},svg);tX.textContent='X（电抗）';
+  const A=75*Math.PI/180,R1=.4,R2=.6;
+  const circ=(R,c)=>mk('circle',{class:c,cx:px(R/2*Math.cos(A)),cy:py(R/2*Math.sin(A)),r:R/2*S},svg);
+  const leW=mk('path',{class:'le'},svg);
+  const z3=circ(1,'z3'),z2=circ(R2,'z2'),z1=circ(R1,'z1');
+  const zl=(t,R,c)=>{const e=mk('text',{x:px(R/2*Math.cos(A))+R/2*S*.72,y:py(R/2*Math.sin(A))-R/2*S*.72,style:'fill:'+c+';font-size:12px'},svg);e.textContent=t;return e};
+  zl('一区',R1,'#DF3329');zl('二区',R2,'#B26F00');const z3l=zl('三区',1,'#1B5BD6');
+  const lel=mk('text',{x:px(1.05),y:py(0)+16,style:'fill:#17A158;font-size:12px;display:none'},svg);lel.textContent='负荷限制区';
+  mk('line',{class:'lineZ',x1:px(0),y1:py(0),x2:px(.5*Math.cos(A)),y2:py(.5*Math.sin(A))},svg);
+  const lzt=mk('text',{x:px(.5*Math.cos(A))-8,y:py(.5*Math.sin(A))-4,'text-anchor':'end'},svg);lzt.textContent='本线阻抗';
+  const tps=[mk('circle',{class:'tp',r:0,stroke:'#1B5BD6'},svg),mk('circle',{class:'tp',r:0,stroke:'#DF3329'},svg)];
+  const trail=mk('polyline',{class:'trail',points:''},svg);
+  const pt=mk('circle',{class:'pt',r:9},svg);
+  const ptl=mk('text',{style:'fill:#B26F00;font-size:12px;font-weight:600'},svg);
+  const sV=$('sV'),sI=$('sI'),sA=$('sA'),sR=$('sR'),le=$('le');
+  const Z=()=>{const m=+sV.value/+sI.value,a=+sA.value*Math.PI/180;return{m,a,r:m*Math.cos(a),x:m*Math.sin(a)}};
+  const inMho=(z,R)=>z.m<R*Math.cos(z.a-A);
+  const LE_ANG=32*Math.PI/180,LE_R=.35;
+  const blocked=z=>le.checked&&Math.abs(z.a)<=LE_ANG&&z.m>=LE_R;
+  function drawZones(){const R=+sR.value;$('oR').textContent=R.toFixed(2);
+    z3.setAttribute('cx',px(R/2*Math.cos(A)));z3.setAttribute('cy',py(R/2*Math.sin(A)));z3.setAttribute('r',R/2*S);
+    z3l.setAttribute('x',px(R/2*Math.cos(A))+R/2*S*.72);z3l.setAttribute('y',py(R/2*Math.sin(A))-R/2*S*.72);lel.style.display=le.checked?'':'none';
+    if(le.checked){const r2=1.45,a1=LE_ANG;leW.setAttribute('d',`M${px(LE_R*Math.cos(a1))} ${py(LE_R*Math.sin(a1))} L${px(r2*Math.cos(a1))} ${py(r2*Math.sin(a1))} A${r2*S} ${r2*S} 0 0 1 ${px(r2*Math.cos(-a1))} ${py(r2*Math.sin(-a1))} L${px(LE_R*Math.cos(-a1))} ${py(LE_R*Math.sin(-a1))} A${LE_R*S} ${LE_R*S} 0 0 0 ${px(LE_R*Math.cos(a1))} ${py(LE_R*Math.sin(a1))} Z`);leW.style.display=''}else leW.style.display='none'}
+  const PRE={normal:[1,.9,18],heavy:[.9,1.65,25],near:[.55,2.2,75],far:[.72,.8,75]};
+  const NAME={normal:'正常负荷',heavy:'重载低压',near:'本线故障',far:'远端故障'};
+  const D=[0,.4,1.5];let held=[0,0,0],tripped=0,pts=[],last=performance.now(),label='正常负荷';
+  function inZones(z){const b=blocked(z);return[inMho(z,R1),inMho(z,R2),inMho(z,+sR.value)&&!b]}
+  function render(){
+    const z=Z();$('oV').textContent=(+sV.value).toFixed(2);$('oI').textContent=(+sI.value).toFixed(2);$('oA').textContent=sA.value+'°';
+    const X=Math.max(8,Math.min(462,px(z.r))),Y=Math.max(8,Math.min(372,py(z.x)));
+    pt.setAttribute('cx',X);pt.setAttribute('cy',Y);ptl.setAttribute('x',X+13);ptl.setAttribute('y',Y-10);ptl.textContent=label;
+    const lp=pts[pts.length-1];if(!lp||Math.hypot(lp[0]-X,lp[1]-Y)>8){pts.push([X,Y]);if(pts.length>50)pts.shift();trail.setAttribute('points',pts.map(p=>p.join(',')).join(' '))}
+    const inz=inZones(z);z3.classList.toggle('hot',inz[2]);
+    ['z1','z2','z3'].forEach((k,i)=>{$(k+'t').textContent=inz[i]?(D[i]===0?'动作':held[i].toFixed(1)+' s'):'—';$(k+'b').style.width=(inz[i]?(D[i]===0?100:held[i]/D[i]*100):0)+'%'});
+    const st=$('rxstat');
+    if(tripped){st.className='rxstat trip';st.innerHTML='<b>'+['一区','二区','三区'][tripped-1]+'动作，断路器跳闸。</b>'+(label==='重载低压'?' 线路上并没有故障——这就是 Sammis–Star 在 16:05:57 遇到的情况。':'')+' <button class="btn" id="rearm" type="button" style="margin-left:6px">复位</button>';$('rearm').onclick=rearm;$('rxled').className='led trip'}
+    else{st.className='rxstat';$('rxled').className='led'+(inz.some(Boolean)?' warn':'');
+      st.innerHTML=inz[0]?'点在一区内：立即跳闸。':inz[1]?'点在二区内：0.4 秒后跳闸。':inz[2]?'点在三区内：延时计时中，满 1.5 秒就跳闸。':blocked(z)&&inMho(z,+sR.value)?'<b>点在负荷限制区内，</b>三区不动作。':'点在所有圈外：保护不动作。视在阻抗 '+z.m.toFixed(2)+' p.u.'}
+  }
+  function rearm(){tripped=0;held=[0,0,0];pts=[];label='正常负荷';set(PRE.normal)}
+  function loop(now){const dt=Math.min(.1,(now-last)/1000);last=now;
+    if(!tripped){const inz=inZones(Z());inz.forEach((v,i)=>{held[i]=v?held[i]+dt:0;if(v&&held[i]>=D[i]&&!tripped)tripped=i+1})}
+    if(document.visibilityState!=='hidden')render();requestAnimationFrame(loop)}
+  function set([v,i,a]){sV.value=v;sI.value=i;sA.value=a}
+  let demoRaf=null;const stopDemo=()=>{if(demoRaf){cancelAnimationFrame(demoRaf);demoRaf=null}};
+  document.querySelectorAll('.pc').forEach(b=>b.onclick=()=>{stopDemo();tripped=0;held=[0,0,0];pts=[];label=NAME[b.dataset.p];set(PRE[b.dataset.p]);
+    document.querySelectorAll('.pc').forEach(x=>x.classList.toggle('on',x===b))});
+  $('demo').onclick=()=>{stopDemo();tripped=0;held=[0,0,0];pts=[];label='正常负荷';const a=PRE.normal,b=PRE.heavy,t0=performance.now(),Dm=5000;
+    document.querySelectorAll('.pc').forEach(x=>x.classList.remove('on'));
+    const st=now=>{const k=Math.min(1,(now-t0)/Dm);set(a.map((v,i)=>v+(b[i]-v)*k));if(k>.5)label='重载低压';if(k<1)demoRaf=requestAnimationFrame(st);else demoRaf=null};demoRaf=requestAnimationFrame(st)};
+  document.querySelectorAll('.steps button,[data-go]').forEach(b=>b.onclick=()=>{const n=b.dataset.st||b.dataset.go;
+    document.querySelectorAll('.steps button').forEach(x=>x.classList.toggle('on',x.dataset.st===n));
+    document.querySelectorAll('.stp').forEach(x=>x.hidden=x.dataset.sp!==n);
+    if(n==='3'){tps.forEach(c=>c.setAttribute('r',0))}});
+  let drag=false;
+  const toSvg=e=>{const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())};
+  function dragTo(e){const p=toSvg(e);const [r,x]=inv(p.x,p.y);const m=Math.max(.2,Math.hypot(r,x)),a=Math.atan2(x,r)*180/Math.PI;
+    const V=+sV.value;let I=V/m;I=Math.max(.2,Math.min(2.5,I));sI.value=I.toFixed(2);sA.value=Math.round(Math.max(-10,Math.min(85,a)));label='手动'}
+  svg.addEventListener('pointerdown',e=>{stopDemo();drag=true;svg.setPointerCapture(e.pointerId);dragTo(e)});
+  svg.addEventListener('pointermove',e=>{if(drag)dragTo(e)});
+  svg.addEventListener('pointerup',()=>drag=false);svg.addEventListener('pointercancel',()=>drag=false);
+  [sV,sI,sA].forEach(x=>x.addEventListener('input',()=>{stopDemo();label='手动'}));
+  let tries=0;
+  [sR,le].forEach(x=>x.addEventListener('input',()=>{drawZones();$('testout').innerHTML=''}));
+  $('runtest').onclick=()=>{
+    tries++;const R=+sR.value,mz=([v,i,a])=>{const m=v/i,an=a*Math.PI/180;return{m,a:an,r:m*Math.cos(an),x:m*Math.sin(an)}};
+    const far=mz(PRE.far),hv=mz(PRE.heavy);
+    const farOk=inMho(far,R)&&!blocked(far),hvOk=!(inMho(hv,R)&&!blocked(hv));
+    [[far,0],[hv,1]].forEach(([z,i])=>{const c=tps[i];c.setAttribute('cx',px(z.r));c.setAttribute('cy',py(z.x));c.setAttribute('r',14)});
+    let msg;
+    if(farOk&&hvOk)msg='<b style="color:var(--ok)">挑战完成。</b>在本例给定阻抗角和两个测试点下，仅调整三区范围做不到两全，负荷限制区把正常负荷的角度范围排除在外，三区才不会把重载误当成故障。2003 年后，北美专门出台了继电保护"负荷能力"标准来处理这个问题。';
+    else if(!le.checked&&!farOk&&hvOk)msg='圈太小，远端故障（蓝圈）没被覆盖，三区失去了远后备作用。把范围调大试试。';
+    else if(!le.checked&&farOk&&!hvOk)msg='圈够大了，但重载点（红圈）也被圈了进去，会误动。'+(tries>1?'<br><b>提示：</b>单靠调整范围找不到两全的值，试试勾选"负荷限制区"。':'再调调整范围看看？');
+    else if(!le.checked)msg='两项都没通过。先把半径调到能覆盖蓝圈。';
+    else msg=farOk?'负荷限制区已启用，再检查一下范围。':'范围太小，蓝圈没被覆盖，调大一些。';
+    $('testout').innerHTML='<div class="row"><span>远端故障（蓝圈，应动作）</span><span class="'+(farOk?'pass':'fail')+'">'+(farOk?'通过':'未动作')+'</span></div><div class="row"><span>重载低压（红圈，不应动作）</span><span class="'+(hvOk?'pass':'fail')+'">'+(hvOk?'通过':'误动作')+'</span></div><p class="note" style="margin-top:6px;color:var(--ink);font-size:13.5px">'+msg+'</p>';
+  };
+  drawZones();requestAnimationFrame(loop);
+})();
+
+/* ===== 调度员挑战 ===== */
+(function(){
+  const svg=$('gsvg'),toast=toaster($('gtoast'));
+  const POS={G2:[100,110],G1:[100,340],M2:[350,110],M1:[350,340],L:[640,225]};
+  const LINES=[
+    {id:'L1',a:'G1',b:'M1',x:.02,lim:900,kv:345},{id:'L2',a:'G2',b:'M2',x:.02,lim:700,kv:345},
+    {id:'L3',a:'M1',b:'L',x:.03,lim:650,kv:345},{id:'L4',a:'M2',b:'L',x:.03,lim:650,kv:345},{id:'L5',a:'M1',b:'M2',x:.04,lim:500,kv:345},
+    {id:'L6',a:'G1',b:'L',x:.10,lim:260,kv:138,c:[300,520]},{id:'L7',a:'G2',b:'L',x:.10,lim:260,kv:138,c:[300,-70]},
+    {id:'L8',a:'M1',b:'L',x:.09,lim:240,kv:138,c:[470,430]},{id:'L9',a:'M2',b:'L',x:.09,lim:240,kv:138,c:[470,20]}
+  ];
+  const TREES={L5:15,L4:28,L3:41};
+  const path=l=>{const [x1,y1]=POS[l.a],[x2,y2]=POS[l.b];return l.c?`M${x1} ${y1} Q${l.c[0]} ${l.c[1]} ${x2} ${y2}`:`M${x1} ${y1} L${x2} ${y2}`};
+  const mid=l=>{const [x1,y1]=POS[l.a],[x2,y2]=POS[l.b];if(!l.c)return[(x1+x2)/2,(y1+y2)/2];return[.25*x1+.5*l.c[0]+.25*x2,.25*y1+.5*l.c[1]+.25*y2]};
+  const E={};
+  LINES.forEach(l=>{const g=mk('g',{class:'l k'+l.kv},svg);const d=path(l);mk('path',{class:'base',d},g);const fl=mk('path',{class:'flow',d},g);
+    let [mx,my]=mid(l);if(l.id==='L5')mx+=0;const tag=mk('g',{class:'tag',transform:`translate(${mx},${my})`},g);
+    mk('rect',{x:-30,y:-11,width:60,height:22,rx:5},tag);const t=mk('text',{x:0,y:4,'text-anchor':'middle'},tag);E[l.id]={g,fl,t}});
+  Object.entries(TREES).forEach(([id])=>{const l=LINES.find(k=>k.id===id);let [mx,my]=mid(l);const TP={L5:[282,228],L4:[438,196],L3:[438,262]}[id];
+    const g=mk('g',{class:'tree',transform:`translate(${TP[0]},${TP[1]})`,tabindex:0,role:'button','aria-label':'修剪 '+id+' 旁的树木'},svg);
+    mk('rect',{x:-2,y:4,width:4,height:10,fill:'#7A5A3A'},g);mk('circle',{class:'crown',cx:0,cy:-2,r:10},g);
+    mk('rect',{class:'mbg',x:-16,y:17,width:32,height:4,rx:2},g);const m=mk('rect',{class:'mfg',x:-16,y:17,width:0,height:4,rx:2},g);const tl=mk('text',{class:'sm',x:14,y:2},g);tl.textContent=id;
+    E['T'+id]={g,m};g.addEventListener('click',()=>trim(id));g.addEventListener('keydown',e=>{if(e.key==='Enter')trim(id)})});
+  Object.entries(POS).forEach(([k,[x,y]])=>{mk('rect',{class:'busbar',x:x-5,y:y-24,width:10,height:48,rx:1.5},svg)});
+  [['G2','西部电源'],['G1','南部电源']].forEach(([k,n])=>{const [x,y]=POS[k];mk('line',{x1:x-5,y1:y,x2:x-30,y2:y,stroke:'#0F1F35','stroke-width':2},svg);
+    mk('circle',{class:'gen',cx:x-46,cy:y,r:16},svg);mk('path',{d:`M${x-55} ${y} q4.5 -8 9 0 t9 0`,fill:'none',stroke:'#0F1F35','stroke-width':2},svg);
+    const t=mk('text',{class:'nm',x:x-46,y:y+38,'text-anchor':'middle'},svg);t.textContent=n;E['o'+k]=mk('text',{class:'sm',x:x-46,y:y+54,'text-anchor':'middle'},svg)});
+  {const [x,y]=POS.L;mk('path',{d:`M${x+5} ${y} L${x+40} ${y} M${x+40} ${y-9} L${x+40} ${y+14} L${x+48} ${y+4} M${x+40} ${y+14} L${x+32} ${y+4}`,stroke:'#0F1F35','stroke-width':2,fill:'none'},svg);
+    const t=mk('text',{class:'nm',x:x+40,y:y+40,'text-anchor':'middle'},svg);t.textContent='负荷中心';E.oL=mk('text',{class:'sm',x:x+40,y:y+56,'text-anchor':'middle'},svg)}
+  [['M2','枢纽 北'],['M1','枢纽 南']].forEach(([k,n])=>{const [x,y]=POS[k];const t=mk('text',{class:'sm',x:x-12,y:k==='M2'?y-30:y+40,'text-anchor':'end'},svg);t.textContent=n});
+
+  let S;
+  function reset(){S={t:0,run:false,over:false,load:1200,g2:500,out:new Set(),ot:{},alarm:'ok',ar:0,crew:null,budget:1,trimmed:new Set(),hidden:[],served:0,shedMW:0,trips:0,fired:{}};
+    $('glog').innerHTML='';$('g2s').value=500;log('m','T+00 值班开始，系统正常');step(0)}
+  function log(k,s){if(S.alarm!=='ok'&&k!=='m'){S.hidden.push([k,s]);return}const d=document.createElement('div');d.className=k;d.textContent=s;const lg=$('glog');lg.prepend(d)}
+  const ts=()=>'T+'+String(Math.floor(S.t)).padStart(2,'0');
+  function solve(){
+    const live=LINES.filter(l=>!S.out.has(l.id));
+    const adj={};Object.keys(POS).forEach(n=>adj[n]=[]);live.forEach(l=>{adj[l.a].push(l.b);adj[l.b].push(l.a)});
+    const seen=new Set(['L']),q=['L'];while(q.length){const n=q.shift();adj[n].forEach(m=>{if(!seen.has(m)){seen.add(m);q.push(m)}})}
+    const hasG1=seen.has('G1'),hasG2=seen.has('G2');
+    if(!hasG1&&!hasG2)return{black:'负荷中心与所有电源断开'};
+    const P={L:-S.load},g2=hasG2?Math.min(S.g2,S.load):0;P.G2=g2;let slack,g1=0;
+    if(hasG1){slack='G1';g1=S.load-g2;if(g1>1100)return{black:'南部电源出力不足，频率崩溃'};P.G1=g1}
+    else{slack='G2';P.G2=S.load;if(S.load>500)return{black:'只剩西部电源供电，发电不足，频率崩溃'}}
+    if(!hasG2&&S.load>1100)return{black:'西部电源被隔离，南部电源独自带不动全部负荷，频率崩溃'};
+    const r=dcFlow(Object.keys(POS),live,P,slack);return{f:r.f,g1:hasG1?g1:0,g2:hasG1?g2:S.load}
+  }
+  function trip(id,why){S.out.add(id);S.trips++;delete S.ot[id];log('t',ts()+' '+id+' 跳闸：'+why);if(S.alarm==='ok')toast(id+' 跳闸：'+why,'bad')}
+  function trim(id){if(!S||S.over)return;if(S.trimmed.has(id)||S.out.has(id)){toast('这里不需要修剪了');return}
+    if(S.crew){toast('班组正在作业');return}if(S.budget<1){toast('本班只能修剪一处');return}
+    S.budget--;S.crew={id,left:6};log('o',ts()+' 派班组修剪 '+id+' 走廊，需 6 秒');if(!S.run)start()}
+  function step(dt){
+    if(S.run&&!S.over){S.t+=dt;
+      if(S.t>=8&&!S.fired.alarm){S.fired.alarm=1;log('w',ts()+' 报警系统失效');S.alarm='fail';toast('报警系统失效：屏幕数据不再更新','bad')}
+      if(S.alarm==='boot'){S.ar-=dt;if(S.ar<=0){S.alarm='ok';const n=S.hidden.length;S.hidden.forEach(([k,s])=>log(k,s+'（补报）'));S.hidden=[];log('o',ts()+' 报警系统恢复，补报 '+n+' 条');toast('报警恢复，补报 '+n+' 条')}}
+      if(S.crew){S.crew.left-=dt;if(S.crew.left<=0){S.trimmed.add(S.crew.id);log('o',ts()+' '+S.crew.id+' 走廊修剪完成');S.crew=null}}
+      Object.entries(TREES).forEach(([id,t])=>{if(S.t>=t&&!S.trimmed.has(id)&&!S.out.has(id)&&!(S.crew&&S.crew.id===id))trip(id,'树线闪络接地')});
+    }
+    let r=solve();
+    if(!r.black&&S.run&&!S.over){
+      LINES.forEach(l=>{if(S.out.has(l.id))return;const lo=Math.abs(r.f[l.id])/l.lim;if(lo>1){S.ot[l.id]=(S.ot[l.id]||0)+dt;if(!S.fired['o'+l.id]){S.fired['o'+l.id]=1;log('w',ts()+' '+l.id+' 过载 '+Math.round(lo*100)+'%')}if(S.ot[l.id]>=5)trip(l.id,'过载，保护动作')}else{S.ot[l.id]=0;S.fired['o'+l.id]=0}});
+      r=solve();S.served+=S.load*dt;
+    }
+    if(r.black&&S.run&&!S.over){end(false,r.black);return}
+    if(S.run&&!S.over&&S.t>=60){end(true);return}
+    paint(r);
+  }
+  function paint(r){
+    const blind=S.alarm!=='ok';
+    LINES.forEach(l=>{const e=E[l.id],o=S.out.has(l.id),f=r.f?r.f[l.id]:0,lo=Math.abs(f)/l.lim;
+      e.g.setAttribute('class','l k'+l.kv+(o?' out':blind?' blind':lo>1?' over':lo>.85?' warn':''));
+      e.fl.classList.toggle('rev',f<0);e.t.textContent=o?'分闸':blind?'--':Math.round(lo*100)+'%'});
+    Object.entries(TREES).forEach(([id,t])=>{const e=E['T'+id];const done=S.trimmed.has(id)||S.out.has(id);const k=done?0:Math.min(1,S.t/t);
+      e.m.setAttribute('width',32*k);e.g.setAttribute('class','tree'+(S.trimmed.has(id)?' trim':'')+(k>.85?' risk2':k>.6?' risk':''))});
+    $('gclk').textContent='T+'+String(Math.floor(S.t)).padStart(2,'0')+' / 60';
+    $('gload').textContent=S.load;$('gg1').textContent=blind?'--':(r.g1!=null?Math.round(r.g1):'--');$('gg2').textContent=blind?'--':(r.g2!=null?Math.round(r.g2):'--');
+    E.oG1.textContent=blind?'-- MW':(r.g1!=null?Math.round(r.g1)+' MW':'');E.oG2.textContent=blind?'-- MW':(r.g2!=null?Math.round(r.g2)+' MW':'');E.oL.textContent=S.load+' MW';
+    $('g2o').textContent=S.g2;
+    const a=$('alarm');a.classList.toggle('bad',S.alarm!=='ok');$('aled').className='led'+(S.alarm==='fail'?' trip blink':S.alarm==='boot'?' warn blink':'');
+    $('atxt').textContent=S.alarm==='ok'?'报警系统正常':S.alarm==='fail'?'报警系统失效，数据不可见':'重启中 '+Math.ceil(S.ar)+' s';
+    $('arestart').style.display=S.alarm==='fail'?'':'none';
+    $('cled').className='led'+(S.crew?' warn blink':S.budget<1?' off':'');
+    $('ctxt').textContent=S.crew?'班组修剪 '+S.crew.id+' 中 '+Math.ceil(S.crew.left)+' s':S.budget<1?'班组已用完':'巡线班组待命（点树木派遣，限 1 处）';
+    const anyOver=r.f&&LINES.some(l=>!S.out.has(l.id)&&Math.abs(r.f[l.id])>l.lim);
+    $('gled').className=$('gled2').className='led'+(S.over?' off':anyOver&&!blind?' trip blink':S.out.size?' warn':'');
+    $('gpause').textContent=S.run?'暂停':'继续';$('gpause').disabled=S.over||S.t===0&&!S.run;
+  }
+  function end(win,why){S.over=true;S.run=false;
+    const pct=Math.round(S.served/(1200*Math.min(60,S.t||1))*100);
+    const stars=!win?0:pct>=90?3:pct>=75?2:1;
+    $('goh').textContent=win?'值班结束，系统守住了':'失去负荷中心';
+    $('gop').innerHTML=win?'60 秒内平均保住 '+pct+'% 负荷，跳闸 '+S.trips+' 条线路。'+(stars<3?'<br>试试更早修剪关键走廊、更早重启报警。':''):
+      why+'。<br>这就是级联：一条线退出，负担转到别处，下一条也撑不住。';
+    $('gostars').textContent='★'.repeat(stars)+'☆'.repeat(3-stars);
+    $('gostart').textContent='再来一局';$('gover').classList.add('show');log(win?'o':'t',ts()+(win?' 值班结束':' 负荷中心失电：'+why));paint(solve())}
+  let raf,last;
+  function start(){if(S.over)reset();S.run=true;$('gover').classList.remove('show');last=performance.now();cancelAnimationFrame(raf);const lp=now=>{const dt=Math.min(.1,(now-last)/1000);last=now;if(S.run)step(dt);if(S.run)raf=requestAnimationFrame(lp)};raf=requestAnimationFrame(lp)}
+  $('gostart').onclick=()=>{reset();start()};
+  $('gpause').onclick=()=>{if(S.over)return;if(S.run){S.run=false;paint(solve())}else start()};
+  $('grestart').onclick=()=>{cancelAnimationFrame(raf);reset();$('goh').textContent='准备值班';$('gostars').textContent='';$('gostart').textContent='开始值班';$('gover').classList.add('show')};
+  $('shed').onclick=()=>{if(S.over)return;if(S.load<=600){toast('不能再切了');return}S.load-=120;S.shedMW+=120;log('m',ts()+' 切负荷 120 MW，负荷 '+S.load);step(0)};
+  $('unshed').onclick=()=>{if(S.over||S.load>=1200)return;S.load+=120;log('m',ts()+' 恢复负荷 120 MW，负荷 '+S.load);step(0)};
+  $('g2s').oninput=e=>{if(S.over)return;S.g2=+e.target.value;step(0)};
+  $('g2s').onchange=()=>log('m',ts()+' 西部电源出力调至 '+S.g2+' MW');
+  $('arestart').onclick=()=>{S.alarm='boot';S.ar=8;log('m',ts()+' 重启报警系统，需 8 秒');step(0)};
+  reset();
+})();
+
+/* ===== 数字里的大停电 ===== */
+(function(){
+  const Q=[
+    {q:'FE 三条关键 345 kV 线路中最先跳闸的 Chamberlin–Harding，碰树时负载率是多少？',min:0,max:150,step:1,unit:'%',a:44,fmt:v=>v+' %',exp:'只有约 44%。线路远未过载，是过高的树木造成了接地故障。',src:'Andersson 等，2005'},
+    {q:'这次停电影响了多少人？',min:500,max:10000,step:100,unit:'万人',a:5000,fmt:v=>v+' 万人',exp:'约 5000 万人，分布在美国 8 个州和加拿大安大略省。',src:'官方最终报告 R1，第1页'},
+    {q:'受影响的电力负荷有多大？',min:5000,max:150000,step:1000,unit:'MW',a:61800,fmt:v=>v.toLocaleString('en-US')+' MW',exp:'约 61,800 MW。作为对比，东部互联电网中受影响的部分约占其总负荷的一成。',src:'官方最终报告 R1，第1、6页'},
+    {q:'级联过程中，停机的发电机组有多少台？',min:0,max:1500,step:1,unit:'台',a:508,fmt:v=>v+' 台',exp:'超过 508 台机组，分布在 265 座电厂。大多数是在电网解列后由自身保护切除的。',src:'官方最终报告 R1，第6章'},
+    {q:'从 Sammis–Star 跳闸（16:05:57）到东北部进一步分裂成孤岛阶段开始（16:10:46），过了多久？',min:0,max:60,step:1,unit:'分钟',a:4.8,fmt:v=>v+' 分钟',exp:'只有 4 分 49 秒。此前的恶化持续了两个多小时，最后的崩溃却不到 5 分钟。',src:'官方最终报告 R1，第6章时间线'}
+  ];
+  const box=$('quiz');let score=0,done=0;
+  Q.forEach((q,i)=>{const d=document.createElement('div');d.className='panel q';
+    const mid=Math.round((q.min+q.max)/2/q.step)*q.step;
+    d.innerHTML='<h3>'+q.q+'</h3><div class="guess"><input type="range" min="'+q.min+'" max="'+q.max+'" step="'+q.step+'" value="'+mid+'" aria-label="你的猜测"><output>'+q.fmt(mid)+'</output></div><button class="btn pri" type="button">揭晓</button><div class="ans"></div>';
+    const r=d.querySelector('input'),o=d.querySelector('output'),b=d.querySelector('button'),a=d.querySelector('.ans');
+    r.oninput=()=>o.textContent=q.fmt(+r.value);
+    b.onclick=()=>{if(d.classList.contains('done'))return;const g=+r.value,err=Math.abs(g-q.a)/q.a;const hit=err<=.2;
+      d.classList.add('done');b.disabled=true;r.disabled=true;done++;if(hit)score++;
+      const real=i===4?'4 分 49 秒':q.fmt(q.a);
+      a.innerHTML='<span class="verdict" style="color:'+(hit?'var(--ok)':'var(--trip)')+'">'+(hit?'猜得很准！':'差得有点远。')+'</span> 实际是 <b>'+real+'</b><br>'+q.exp+'<br><span class="note">来源：'+q.src+'</span>';
+      $('qscore').textContent='已揭晓 '+done+' / '+Q.length+'，猜中（误差 20% 以内）'+score+' 题'+(done===Q.length?(score>=4?'。你对这场事故已经很有数了。':'。回到视频和上面的回放里，再看看这些数字出现在哪里。'):'')};
+    box.appendChild(d)});
+  const F=[
+    {big:'597 MW',t:'机组在"帮忙"时跳闸',p:'13:31，操作员正提高 Eastlake 5 号机组的无功出力来撑电压，机组保护判定无功超出能力，把它切了下来。',s:'R1 第4章'},
+    {big:'800+',t:'15:05 时系统其实是安全的',p:'调查组复核发现，第一条线路跳闸前，系统能承受研究所检验的 800 多种单一故障。事故不是"注定"的。',s:'R1 第4章'},
+    {big:'直流',t:'魁北克几乎没受影响',p:'魁北克与东部电网只通过直流联络线相连。直流联络使两侧交流电网不同步运行，有助于限制这类同步失稳的传播；并非能隔绝所有扰动。',s:'R1 第2、6章'},
+    {big:'−0.7%',t:'加拿大的账单',p:'当年 8 月加拿大 GDP 下降 0.7%，净损失 1890 万个工时；安大略部分地区轮流停电超过一周。',s:'R1 第1章'},
+    {big:'60',t:'纽约的夜晚',p:'纽约当晚发生 60 起严重火灾，多数与停电后点蜡烛有关；克利夫兰约 150 万人因水泵失电而停水。',s:'CBS News / AP，2003-08-15'},
+    {big:'2007',t:'从"自愿"到"强制"',p:'报告 46 条建议中最重要的一条，是让可靠性标准强制执行。2005 年美国立法授权，2007 年 6 月 18 日起标准在美国强制生效，其中就包括输电走廊植被管理。',s:'R1 第1章；FERC NERC Standards'}
+  ];
+  const fb=$('flips');
+  F.forEach(f=>{const b=document.createElement('button');b.type='button';b.className='flip';b.setAttribute('aria-label',f.t+'，点击翻面');
+    b.innerHTML='<div class="in"><div class="f"><div class="big">'+f.big+'</div><div class="t">'+f.t+'</div><div class="h">点击翻面</div></div><div class="b"><p>'+f.p+'</p><div class="src">来源：'+f.s+'</div></div></div>';
+    b.onclick=()=>b.classList.toggle('on');fb.appendChild(b)});
+})();
+</script>
+</body>
+</html>
