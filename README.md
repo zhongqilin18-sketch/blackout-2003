@@ -13,14 +13,14 @@
 主要文件：
 
 - `index.html`：网页样式、互动与播放器逻辑。
-- `hls/index.m3u8` 与 `hls/seg*.ts`：原视频无重新编码封装的 HLS 点播资源。
+- `hls-v2/index.m3u8` 与 `hls-v2/seg*.ts`：原视频无重新编码封装的 HLS 点播资源。
 - `vendor/hls.min.js`：hls.js 1.6.13，本地托管，Apache-2.0；许可证见同目录。
 - `poster.jpg`：视频封面。
 
 视频为 H.264/AAC，1280×720，总时长约176.884秒。封装命令：
 
 ```sh
-ffmpeg -i input.mp4 -map 0:v:0 -map 0:a:0 -c copy -hls_time 6 -hls_playlist_type vod -hls_segment_filename "hls/seg%03d.ts" hls/index.m3u8
+ffmpeg -i input.mp4 -map 0:v:0 -map 0:a:0 -c copy -hls_time 6 -hls_playlist_type vod -hls_segment_filename "hls-v2/seg%03d.ts" hls-v2/index.m3u8
 ```
 
 分段以原关键帧为边界，实际段长并非固定6秒。无损封装不意味着观看网络带宽可减少；较慢网络可能缓冲。支持原生 HLS 的浏览器优先使用原生播放，其余受支持浏览器使用本地 hls.js。
@@ -32,3 +32,7 @@ ffmpeg -i input.mp4 -map 0:v:0 -map 0:a:0 -c copy -hls_time 6 -hls_playlist_type
 原始网页由 Claude 协助编写；GPT-6 Astra 协助部署适配、播放器、事实与数值核查。视频制作的 AI 使用情况见片尾。
 
 本仓库不包含作业压缩包、姓名学号文件名或本地账号凭据。第三方文献提供原始出处链接，不重新发布整篇新闻或论文。
+
+## 2026-09-29 配音修正
+
+两处“重载”统一读作 zhòng zài，字幕、画面与视频时间线不变。仅替换两处短语的语音波形；成片视频流直接复制，音轨以AAC 320 kbps重新编码。视频资源目录改为 `hls-v2`，避免浏览器沿用旧配音缓存。

@@ -596,7 +596,7 @@ const vid=$('vid');
   async function start(){
     const ticket=++generation;clear();mediaRetries=0;status.textContent='正在加载视频…';
     if(location.protocol==='file:'){vid.src=VIDEO_SRC;return}
-    const playlist=new URL('./hls/index.m3u8',location.href).href;
+    const playlist=new URL('./hls-v2/index.m3u8',location.href).href;
     if(vid.canPlayType('application/vnd.apple.mpegurl')){vid.src=playlist;return}
     try{
       if(!window.Hls)await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='./vendor/hls.min.js';s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});
